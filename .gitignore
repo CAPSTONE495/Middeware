@@ -1,9 +1,9 @@
 HELP.md
 target/
-*.xml
 !.mvn/wrapper/maven-wrapper.jar
-#!**/src/main/**
-#!**/src/test/**
+!**/src/main/**
+!**/src/test/**
+/src/main/java/com/example/restservice/Constants/Configure.xml
 
 ### STS ###
 .apt_generated

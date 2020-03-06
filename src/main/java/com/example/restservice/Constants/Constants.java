@@ -26,7 +26,7 @@ public class Constants {
     }
 
     public static class DatabaseConstants {
-        private static final File credentials = new File("Credentials.xml").getAbsoluteFile();
+        private static final File credentials = new File("Configure.xml").getAbsoluteFile();
 
         private enum xmlConstants{
             //TODO figure out format when we start db
