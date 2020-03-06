@@ -30,10 +30,15 @@ public class Constants {
 
         private enum xmlConstants{
             //TODO figure out format when we start db
-            DATABASE("Database",
-                    new String[] {"",
-                            ""}
-                            );
+            DATABASE("Database", new String[]
+                    {"",
+                    ""}
+                    ),
+            SERVER("Server", new String[]
+                    {"server.port",
+                    "server.error.whitelabel.enabled",
+                    "spring.autoconfigure.exclude"}
+                    );
 
             private String tag;
             private String[] allAttributes;
