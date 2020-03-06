@@ -1,32 +1,29 @@
 package com.example.restservice.Controllers;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.context.request.ServletWebRequest;
 
-
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
-public class CustomErrorController implements ErrorController {
-    private static final String PATH = "/error";
-    private static boolean TRACE = false;
+public class CustomErrorController extends AbstractErrorController {
 
-    @Autowired
-    private ErrorAttributes errorAttributes;
-
-    @RequestMapping(value = PATH)
-    public String error(){
-        return "error handling";
+    public CustomErrorController(ErrorAttributes errorAttributes) {
+        super(errorAttributes);
     }
-
+    @RequestMapping(value = "/error", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> handleError(HttpServletRequest request){
+        Map<String, Object> errorAttributes = super.getErrorAttributes(request,true);
+        return errorAttributes;
+    }
 
     @Override
     public String getErrorPath() {
-        return PATH;
+        return null;
     }
 }
