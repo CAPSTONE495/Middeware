@@ -1,4 +1,4 @@
 package com.example.restservice.Controllers;
 
-public class RiderController {
+public class PassengerController {
 }
