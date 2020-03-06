@@ -1,6 +1,6 @@
 HELP.md
 target/
-src/main/java/com/example/restservice/Constants/Credentials.xml
+*.xml
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
