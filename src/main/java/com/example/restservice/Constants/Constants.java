@@ -42,7 +42,7 @@ public class Constants {
                 this.allAttributes=allAttributes;
             }
         }
-        public boolean loadDatabaseCredials() throws ParserConfigurationException, IOException, SAXException {
+        public static boolean loadDatabaseCredials() throws ParserConfigurationException, IOException, SAXException {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(credentials);
