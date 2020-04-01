@@ -13,31 +13,9 @@ public class RestServiceApplication {
 
 	public static void main(String[] args) {
 
-		//if(!loadData()){return;}
+
 
 		SpringApplication.run(RestServiceApplication.class, args);
-	}
-
-	private static boolean loadData(){
-
-
-		try {
-			Constants.DatabaseConstants.loadDatabaseCredials();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		} catch (SAXException e) {
-			e.printStackTrace();
-			return false;
-		}
-
-
-
-
-		return true;
 	}
 
 }
