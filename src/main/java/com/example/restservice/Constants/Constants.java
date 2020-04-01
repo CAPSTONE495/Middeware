@@ -26,7 +26,6 @@ public class Constants {
     }
 
     public static class DatabaseConstants {
-        private static final File credentials = new File("Configure.xml").getAbsoluteFile();
 
         private enum xmlConstants{
             //TODO figure out format when we start db
@@ -47,20 +46,7 @@ public class Constants {
                 this.allAttributes=allAttributes;
             }
         }
-        public static boolean loadDatabaseCredials() throws ParserConfigurationException, IOException, SAXException {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(credentials);
-            doc.getDocumentElement().normalize();
 
-            xmlConstants[] listOfCreds = xmlConstants.values();
-            ArrayList<NodeList> listOfNodes = new ArrayList<>();
-            for(xmlConstants c : listOfCreds){
-                listOfNodes.add(doc.getElementsByTagName(c.tag));
-            }
-
-            return false;
-        }
     }
 
     //TODO delete this at the end, only used to test local code

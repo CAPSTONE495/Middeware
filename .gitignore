@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
-/src/main/java/com/example/restservice/Constants/Configure.xml
+/src/main/java/resources/application.properties
 
 ### STS ###
 .apt_generated

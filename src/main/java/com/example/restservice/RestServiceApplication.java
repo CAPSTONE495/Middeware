@@ -13,7 +13,7 @@ public class RestServiceApplication {
 
 	public static void main(String[] args) {
 
-		if(!loadData()){return;}
+		//if(!loadData()){return;}
 
 		SpringApplication.run(RestServiceApplication.class, args);
 	}
