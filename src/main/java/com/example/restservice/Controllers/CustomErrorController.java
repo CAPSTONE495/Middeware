@@ -1,29 +1,44 @@
 package com.example.restservice.Controllers;
 
 
-import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
-import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-@Controller
-public class CustomErrorController extends AbstractErrorController {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-    public CustomErrorController(ErrorAttributes errorAttributes) {
-        super(errorAttributes);
-    }
-    @RequestMapping(value = "/error", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> handleError(HttpServletRequest request){
-        Map<String, Object> errorAttributes = super.getErrorAttributes(request,true);
-        return errorAttributes;
+
+import com.example.restservice.Constants.Constants.PathConstants;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+//import org.springframework.web.context.request.RequestAttributes;
+//import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.example.restservice.Representation_Classes.ErrorJson;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
+
+@RestController
+public class CustomErrorController implements ErrorController {
+
+    @Autowired
+    private ErrorAttributes errorAttributes;
+
+    @RequestMapping(value = PathConstants.ERROR)
+    ErrorJson error(HttpServletRequest request, HttpServletResponse response){
+        return new ErrorJson(response.getStatus(),getErrorAttributes(request,false));
     }
 
     @Override
     public String getErrorPath() {
-        return null;
+        return PathConstants.ERROR;
+    }
+
+    private Map<String,Object> getErrorAttributes(HttpServletRequest request, boolean includeStackTrace){
+        //RequestAttributes requestAttributes = new ServletRequestAttributes(request);
+        WebRequest webRequest = new ServletWebRequest(request);
+        return errorAttributes.getErrorAttributes(webRequest,includeStackTrace);
     }
 }
