@@ -5,7 +5,7 @@ import java.io.File;
 
 public class Constants {
     public static String ACCEPTEDEMAILDOMAIN = "oswego.edu";
-    public static String PATHTOCREDENTIALS = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"credentials.json";//System.getProperty("user.dir")+File.pathSeparator+"src"+ File.pathSeparator+"main"+ File.pathSeparator+
+    public static String PATHTOCREDENTIALS = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"credentials.json";
     public static class PathConstants {
         public static final String DRIVERPATH = "/Driver";
         public static final String PASSENGERPATH = "/Passenger";
@@ -15,6 +15,7 @@ public class Constants {
         public static final String HISTORYPATH = "/History";
         public static final String ERROR = "/error";
     }
+
 
     public static void main(String[] args){
 
