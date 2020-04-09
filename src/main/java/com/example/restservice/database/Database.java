@@ -11,44 +11,62 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+/**
+database scheme
+User Table{
+    Primary Key: int User ID
+    String Email
+    boolean/bit is_driver
+    boolean/bit is_admin
+    char[2] grade (only allow: "f","sf","j","se","g","p")
+    int total_rides_taken
+    int total_passengers-taken
+    double distance_traveled
+    double total_length_of_drives
+}
 
+
+ */
 @Service
 public class Database {
-    private final String JDBC_DRIVER;
-    private final String DB_URL;
-    private final String USER;
-    private final String PASS;
+    private static String JDBC_DRIVER;
+    private static String DB_URL;
+    private static String USER;
+    private static String PASS;
     private static ComboPooledDataSource cpds;
 
 
-
+    /**
+    Requires autowire
+     change the constructor as you need
+     any creds should be stored in application.properties
+     and called using @Value("${'value name'}")
+     */
     @Autowired
-    public Database(@Value("${spring.datasource.driverClassName}") String driver,
-                    @Value("${spring.datasource.url}")String url,
-                    @Value("${spring.datasource.username}")String user,
-                    @Value("${spring.datasource.password}")String pass) throws ClassNotFoundException, PropertyVetoException {
-        this.JDBC_DRIVER = driver;
-        this.DB_URL = url;
-        this.USER = user;
-        this.PASS = pass;
-        if(cpds!=null)
-            return;
-        Class.forName(JDBC_DRIVER);
-        //registering driver here since it should only occur once....could be wrong
-        cpds =  new ComboPooledDataSource();
-        cpds.setDriverClass(JDBC_DRIVER);
-        cpds.setJdbcUrl(DB_URL);
-        cpds.setUser(USER);
-        cpds.setPassword(PASS);
-        cpds.setMaxPoolSize(20);
-        cpds.setMinPoolSize(10);
-        cpds.setInitialPoolSize(5);
+    public Database(){
+
     }
 
+    /**
+     static method to get connection objects
+     may be obsolete with how mongo handles connection pools
+     but having a static connection pool is required to prevent dedos
+     */
     public static Connection getConnection() throws SQLException {
         return cpds.getConnection();
     }
 
+    /**
+    Adduser method, takes in a string that is the users email and returns boolean
+     if(email/user does not exist in db){
+        add user to db
+            with values:
+            (pkey(auto increment),email,false,false,null,0,0,0,0)
+        return false;
+     }else{
+        return true;
+     }
+     */
     public boolean addUser(String email){
         Connection connection = null;
         Statement statement = null;
@@ -56,7 +74,7 @@ public class Database {
             connection = Database.getConnection();
             statement = connection.createStatement();
 
-            statement.executeUpdate(String.format(Constants.SQLstatements.ADDUSER,email));
+
 
             statement.close();
             connection.close();
@@ -69,6 +87,11 @@ public class Database {
         return true;
     }
 
+    /**
+    Closing connections and statements usually require a lot repetitive
+     try catching, these methods handle all the try catching to reduce key strokes
+     ----possibly not needed with mongedb.
+     */
     private void closeConnection(Connection connection){
         if(connection!=null) {
             try {
@@ -83,5 +106,10 @@ public class Database {
             } catch (SQLException e) {}
         }
     }
+
+
+    /*
+    If you need to test a non static method, test it in RestServiceApplication.java
+     */
 
 }

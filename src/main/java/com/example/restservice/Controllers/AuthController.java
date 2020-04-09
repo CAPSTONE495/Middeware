@@ -79,6 +79,8 @@ public class AuthController {
             throw new RuntimeException("key generation failure, :server side issue");
         }
 
+        Constants.APIKeyMapper.addAPIKey(email,apiKey);
+
         return new TokenJson(apiKey,database.addUser(email));
     }
 

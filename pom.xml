@@ -40,6 +40,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- google -->
 		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
 		<dependency>
 			<groupId>com.google.api-client</groupId>
@@ -67,20 +68,16 @@
 		<!-- database libs -->
 		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>1.4.200</version>
-		</dependency>
-		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
 			<version>0.9.5.1</version>
+		</dependency>
+		<!-- misc -->
+		<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.5</version>
 		</dependency>
 
 	</dependencies>
