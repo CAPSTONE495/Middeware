@@ -3,10 +3,12 @@ package com.example.restservice.Controllers;
 import com.example.restservice.Constants.Constants;
 import com.example.restservice.Constants.Constants.PathConstants;
 import com.example.restservice.Representation_Classes.TokenJson;
+import com.example.restservice.database.Database;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -24,6 +26,8 @@ import java.util.Collections;
 public class AuthController {
     private static final String clientID;
     private static final boolean DOMAINBYPASS = false;
+    @Autowired
+    Database database;
 
     /*@PostConstruct
     public void initialize(){
@@ -36,7 +40,7 @@ public class AuthController {
     }
 
     @RequestMapping(value=PathConstants.AUTHPATH+"/gettoken",method = RequestMethod.POST)
-    public static TokenJson authTokin(@RequestParam(value = "tokenID", defaultValue = "") String tokenID){
+    public TokenJson authTokin(@RequestParam(value = "tokenID", defaultValue = "") String tokenID){
 
         //check if required info is present
         if(tokenID.equals("")){
@@ -75,9 +79,7 @@ public class AuthController {
             throw new RuntimeException("key generation failure, :server side issue");
         }
 
-        //TODO add a check to make sure email/user is in database
-
-        return new TokenJson(apiKey);
+        return new TokenJson(apiKey,database.addUser(email));
     }
 
     private static String getClientID(){
@@ -101,7 +103,6 @@ public class AuthController {
 
     public static void main(String[] args){
         System.out.println("testing getClientID");
-        System.out.println(authTokin("dafdas"));
     }
 
 }

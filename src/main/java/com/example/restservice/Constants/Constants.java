@@ -15,6 +15,12 @@ public class Constants {
         public static final String HISTORYPATH = "/History";
         public static final String ERROR = "/error";
     }
+    /*
+    TABLES: USER_TBL
+     */
+    public static class SQLstatements{
+        public static final String ADDUSER = "INSERT INTO USER_TBL VALUES (NULL,%1$s,0,0,0,NULL,NULL);";
+    }
 
 
     public static void main(String[] args){
