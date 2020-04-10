@@ -33,7 +33,6 @@ public class Database {
     private static String DB_URL;
     private static String USER;
     private static String PASS;
-    private static ComboPooledDataSource cpds;
 
 
     /**
@@ -47,14 +46,6 @@ public class Database {
 
     }
 
-    /**
-     static method to get connection objects
-     may be obsolete with how mongo handles connection pools
-     but having a static connection pool is required to prevent dedos
-     */
-    public static Connection getConnection() throws SQLException {
-        return cpds.getConnection();
-    }
 
     /**
     updateGrade method, takes in a string to represent grade/type of user and email of user
@@ -110,23 +101,7 @@ public class Database {
      affected tables: {User Table}
      */
     public boolean addUser(String email){
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = Database.getConnection();
-            statement = connection.createStatement();
-
-
-
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException("sql error: "+e.getLocalizedMessage());
-        }finally {
-            closeConnection(connection);
-            closeConnection(statement);
-        }
-        return true;
+        return false;
     }
 
     /**

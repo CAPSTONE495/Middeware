@@ -66,12 +66,7 @@
 			<version>2.3.3</version>
 		</dependency>
 		<!-- database libs -->
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>c3p0</artifactId>
-			<version>0.9.5.1</version>
-		</dependency>
+
 		<!-- misc -->
 		<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
 		<dependency>
