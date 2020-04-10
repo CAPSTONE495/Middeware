@@ -18,7 +18,7 @@ User Table{
     String Email
     boolean/bit is_driver
     boolean/bit is_admin
-    char[2] grade (only allow: "f","sf","j","se","g","p")
+    char[2] grade
     int total_rides_taken
     int total_passengers-taken
     double distance_traveled
