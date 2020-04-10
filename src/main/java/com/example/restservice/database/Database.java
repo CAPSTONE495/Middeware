@@ -1,13 +1,13 @@
 package com.example.restservice.database;
 
 
-import com.example.restservice.Constants.Constants;
+
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.beans.PropertyVetoException;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -60,6 +60,7 @@ public class Database {
     updateGrade method, takes in a string to represent grade/type of user and email of user
     find user, replace grade.
      If any error occurs throw runtime exception
+     affected tables: {User Table}
      */
     public void updateGrade(String email,String grade){
 
@@ -70,6 +71,7 @@ public class Database {
     True for being admin, false for being standard user.
      find user, change admin value to isAdmin representation
      if any error occurs throw runtime exception
+     affected tables: {User Table}
      */
     public void changeAdminStatus(String email, boolean isAdmin){
 
@@ -80,6 +82,7 @@ public class Database {
      True for being driver, false for not a driver.
      find user, change driver value to isDriver representation
      if any error occurs throw runtime exception
+     affected tables: {User Table}
      */
     public void changeDriverStatus(String email,boolean isDriver){
 
@@ -89,6 +92,7 @@ public class Database {
     isAdmin method, takes user's email and returns a boolean to tell if the account has admin priv or not
      find user, read isAdmin value, return isAdmin value
      if any error occurs throw runtime exception
+     affected tables: {User Table}
      */
     public boolean isAdmin(String email){
         return false;
@@ -103,6 +107,7 @@ public class Database {
      }else{
         return true;
      }
+     affected tables: {User Table}
      */
     public boolean addUser(String email){
         Connection connection = null;
