@@ -101,7 +101,7 @@ public class AuthController {
         return verifier.verify(tokenID);
     }
 
-    public static String getEmail(String tokenID){
+    private static String getEmail(String tokenID){
         try {
             return getUserTokin(tokenID).getPayload().getEmail();
         } catch (GeneralSecurityException e) {
@@ -120,7 +120,7 @@ public class AuthController {
                 return new ResponseJson(action,false,"Missing an entry");
         }
 
-        String email = AuthController.getEmail(tokenID);
+        String email = getEmail(tokenID);
         if(email==null)
             return new ResponseJson("update grade",false,"unable to extract email");
 
