@@ -57,6 +57,43 @@ public class Database {
     }
 
     /**
+    updateGrade method, takes in a string to represent grade/type of user and email of user
+    find user, replace grade.
+     If any error occurs throw runtime exception
+     */
+    public void updateGrade(String email,String grade){
+
+    }
+
+    /**
+    changeAdminStatus method, takes a user's email and a boolean that represents their new admin status
+    True for being admin, false for being standard user.
+     find user, change admin value to isAdmin representation
+     if any error occurs throw runtime exception
+     */
+    public void changeAdminStatus(String email, boolean isAdmin){
+
+    }
+
+    /**
+     changeDriverStatus method, takes a user's email and a boolean that represents their new driver status
+     True for being driver, false for not a driver.
+     find user, change driver value to isDriver representation
+     if any error occurs throw runtime exception
+     */
+    public void changeDriverStatus(String email,boolean isDriver){
+
+    }
+
+    /**
+    isAdmin method, takes user's email and returns a boolean to tell if the account has admin priv or not
+     find user, read isAdmin value, return isAdmin value
+     if any error occurs throw runtime exception
+     */
+    public boolean isAdmin(String email){
+        return false;
+    }
+    /**
     Adduser method, takes in a string that is the users email and returns boolean
      if(email/user does not exist in db){
         add user to db

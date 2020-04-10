@@ -3,6 +3,7 @@ package com.example.restservice.Representation_Classes;
 import java.util.Map;
 
 public class ErrorJson {
+    private String type = "ErrorJson";
     private Integer status;
     private String error;
     private String message;

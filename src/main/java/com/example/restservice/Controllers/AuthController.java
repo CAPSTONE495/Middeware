@@ -2,6 +2,7 @@ package com.example.restservice.Controllers;
 
 import com.example.restservice.Constants.Constants;
 import com.example.restservice.Constants.Constants.PathConstants;
+import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.Representation_Classes.TokenJson;
 import com.example.restservice.database.Database;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -24,20 +25,11 @@ import java.util.Collections;
 
 @RestController
 public class AuthController {
-    private static final String clientID;
+    private static final String clientID = getClientID();
     private static final boolean DOMAINBYPASS = false;
     @Autowired
     Database database;
 
-    /*@PostConstruct
-    public void initialize(){
-        if(clientID==null)
-            clientID=getClientID();
-    }*/
-
-    static{
-        clientID = getClientID();
-    }
 
     @RequestMapping(value=PathConstants.AUTHPATH+"/gettoken",method = RequestMethod.POST)
     public TokenJson authTokin(@RequestParam(value = "tokenID", defaultValue = "") String tokenID){
@@ -49,13 +41,11 @@ public class AuthController {
             throw new RuntimeException("No client ID. Server side issue.");
         }
 
-        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                .setAudience(Collections.singletonList(clientID))
-                .build();
+
 
         String email;
         try {
-            GoogleIdToken token = verifier.verify(tokenID);
+            GoogleIdToken token = getUserTokin(tokenID);
             if(token == null)
                 throw new RuntimeException("invalid tokin");
             GoogleIdToken.Payload payload = token.getPayload();
@@ -101,6 +91,43 @@ public class AuthController {
         SecretKey secretKey = keyGen.generateKey();
         byte[] encoded = secretKey.getEncoded();
         return DatatypeConverter.printHexBinary(encoded);
+    }
+
+    //each instance will be thread safe as no global value manipulation is occuring
+    private static GoogleIdToken getUserTokin(String tokenID) throws GeneralSecurityException, IOException {
+        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
+                .setAudience(Collections.singletonList(clientID))
+                .build();
+        return verifier.verify(tokenID);
+    }
+
+    public static String getEmail(String tokenID){
+        try {
+            return getUserTokin(tokenID).getPayload().getEmail();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Object checker(String action, String apiKey,String tokenID,String[] nonNullValues){
+        if(tokenID.equals("")||tokenID.equals(""))
+            return new ResponseJson(action,false,"Missing an entry");
+        for(String x:nonNullValues){
+            if(x.equals(""))
+                return new ResponseJson(action,false,"Missing an entry");
+        }
+
+        String email = AuthController.getEmail(tokenID);
+        if(email==null)
+            return new ResponseJson("update grade",false,"unable to extract email");
+
+        if(!Constants.APIKeyMapper.checkAPIKey(email,apiKey))
+            return new ResponseJson("update grade",false,"invalid apiKey");
+
+        return email;
     }
 
     public static void main(String[] args){
