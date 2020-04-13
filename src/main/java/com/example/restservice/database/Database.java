@@ -12,10 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 /**
 database scheme
-User Table{
+User Table{//TODO make this table
     Primary Key: int User ID
     String Email
     boolean/bit is_driver
+    int seats //TODO add this column if table is already made
     boolean/bit is_admin
     char[2] grade
     int total_rides_taken
@@ -24,7 +25,38 @@ User Table{
     double total_length_of_drives
 }
 
+Rides Table{//TODO make this table
+    Primary Key: int Ride ID (cant be null)
+    int Driver ID (linked to User ID in User Table) (cant be null)
+    int DestinationBusStopID (linked to values in BusStop Table)
+    DateTime StartDate (cant be null) (DateTime format: MM/dd/YYYY HH:mm:SS)
+    DateTime EndDate (cant be null)
+    int Completed (default is 0)
+    int Cancelled (default is 0)
+    int PickupBusStopID (repeat for 10 columns) (linked to values in BusStop Table)
+    int PassengerID (linked to values in BusStop Table)] (repeat for 15 columns)
+ }
 
+ BusStop Table{//TODO make this table
+    Primary Key: int BusStopID
+    String country
+    String state
+    String city
+    String street
+    String areaCode
+    Boolean Destination
+    int PassengerID (repeat for 15 columns)
+
+ }
+
+ Passenger Table{//TODO make this table
+    Primary Key: int PassengerID
+    int RiderID (linked to User Table)
+    int RideID (linked to Rides table)
+    DateTime StartDate (DateTime format: MM/dd/YYYY)
+    DateTime EndDate (DateTime format: MM/dd/YYYY)
+    BusStopID pickupLocation (linked to values in BusStop Table)
+ }
  */
 @Service
 public class Database {
@@ -35,6 +67,7 @@ public class Database {
 
 
     /**
+     //TODO fill in method
     Requires autowire
      change the constructor as you need
      any creds should be stored in application.properties
@@ -47,6 +80,7 @@ public class Database {
 
 
     /**
+     //TODO fill in method
     updateGrade method, takes in a string to represent grade/type of user and email of user
     find user, replace grade.
      If any error occurs throw runtime exception
@@ -57,6 +91,7 @@ public class Database {
     }
 
     /**
+     //TODO fill in method
     changeAdminStatus method, takes a user's email and a boolean that represents their new admin status
     True for being admin, false for being standard user.
      find user, change admin value to isAdmin representation
@@ -68,6 +103,7 @@ public class Database {
     }
 
     /**
+     //TODO fill in method
      changeDriverStatus method, takes a user's email and a boolean that represents their new driver status
      True for being driver, false for not a driver.
      find user, change driver value to isDriver representation
@@ -79,6 +115,7 @@ public class Database {
     }
 
     /**
+     //TODO fill in method
     isAdmin method, takes user's email and returns a boolean to tell if the account has admin priv or not
      find user, read isAdmin value, return isAdmin value
      if any error occurs throw runtime exception
@@ -88,6 +125,7 @@ public class Database {
         return false;
     }
     /**
+     //TODO fill in method
     Adduser method, takes in a string that is the users email and returns boolean
      if(email/user does not exist in db){
         add user to db
