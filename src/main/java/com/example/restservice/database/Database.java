@@ -39,6 +39,7 @@ Rides Table{//TODO make this table
 
  BusStop Table{//TODO make this table
     Primary Key: int BusStopID
+    String locationName
     String country
     String state
     String city
