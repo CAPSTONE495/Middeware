@@ -78,6 +78,12 @@ public class Database {
     public Database(){
 
     }
+    
+    public MongoDatabase Connection() {
+		MongoClient mongoClient = MongoClients.create("mongodb+srv://nmolina:OMYTXMcswUTHvdFd@cluster0-v76zg.mongodb.net/test?retryWrites=true&w=majority");
+		MongoDatabase database = mongoClient.getDatabase("Capstone");
+		return database;
+	}
 
 
     /**
