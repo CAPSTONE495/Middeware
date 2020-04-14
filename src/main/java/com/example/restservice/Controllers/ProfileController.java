@@ -14,6 +14,26 @@ import static com.example.restservice.Controllers.AuthController.checker;
 public class ProfileController {
     @Autowired
     Database database;
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addName",method = RequestMethod.POST)
+    public ResponseJson addName(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+                                @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
+                                @RequestParam(value = "firstName", defaultValue = "") String fName,
+                                @RequestParam(value = "lastName", defaultValue = "") String lName){
+
+        Object value = checker("updateGrade",apiKey,tokenID,new String[] {fName,lName});
+
+        String email;
+        if(value instanceof String){
+            email = (String) value;
+        }else{
+            return (ResponseJson) value;
+        }
+
+
+
+        return new ResponseJson("add name",true,"");
+    }
+
     @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.POST)
     public ResponseJson updateGrade(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                     @RequestParam(value = "tokenID", defaultValue = "") String tokenID,

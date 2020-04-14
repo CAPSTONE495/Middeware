@@ -152,6 +152,16 @@ public class Database {
         return false;
     }
 
+    /**
+    addName method, takes email, first name, and last name and returns boolean if update worked
+    find user by email
+    add firstName and lastname to column
+    return true;
+     */
+    public boolean addName(String email, String firstName, String lastName){
+        return false;
+    }
+
 
 
 
