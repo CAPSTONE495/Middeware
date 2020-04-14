@@ -16,15 +16,17 @@ import com.mongodb.client.MongoDatabase;
 database scheme
 User Table{//TODO make this table
     Primary Key: int User ID
+    String FirstName
+    String LastName
     String Email
-    boolean/bit is_driver
+    boolean/bit Is_Driver
     int seats //TODO add this column if table is already made
-    boolean/bit is_admin
-    char[2] grade
-    int total_rides_taken
-    int total_passengers-taken
-    double distance_traveled
-    double total_length_of_drives
+    boolean/bit Is_Admin
+    char[2] Grade
+    int Total_Rides_Taken
+    int Total_Passengers_Taken
+    double Distance_Traveled
+    double Total_Length_Of_Drives
 }
 
 Rides Table{//TODO make this table
@@ -150,25 +152,8 @@ public class Database {
         return false;
     }
 
-    /**
-    Closing connections and statements usually require a lot repetitive
-     try catching, these methods handle all the try catching to reduce key strokes
-     ----possibly not needed with mongedb.
-     */
-    private void closeConnection(Connection connection){
-        if(connection!=null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {}
-        }
-    }
-    private void closeConnection(Statement statement){
-        if(statement!=null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {}
-        }
-    }
+
+
 
 
     /*
