@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.bson.Document;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 /**
 database scheme
 User Table{//TODO make this table
@@ -172,5 +174,45 @@ public class Database {
     /*
     If you need to test a non static method, test it in RestServiceApplication.java
      */
-
+	/*
+	possible user methods
+	public void addUser(int id, String first, String last, String email) {
+		MongoDatabase storage = new Database().Connection();
+		MongoCollection<Document> collection = storage.getCollection("Users");
+		Document doc = new Document("Id", id).append("Firstname", first).append("Lastname", last).append("Email", email);
+		collection.insertOne(doc);
+		}
+	
+	public Document searchUserById(int id) {		
+		MongoDatabase storage = new Database().Connection();
+		MongoCollection<Document>collection = storage.getCollection("Users");
+		Document search = new Document("Id", id);
+		Document user = (Document) collection.find(search);
+		return user;
+	}
+	
+	public void updateUser(int id, Document change) {
+		Document user = searchUserById(id);
+		MongoDatabase storage = new Database().Connection();
+		MongoCollection<Document>collection = storage.getCollection("Users");
+		collection.updateOne(user, change);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Document> getAllUsers() {
+		MongoDatabase storage = new Database().Connection();
+		MongoCollection<Document> collection = storage.getCollection("Users");
+		ArrayList<Document> users = new ArrayList<Document>();
+		users =  (ArrayList<Document>) collection.find();
+		return users;
+	}
+	
+	public void deleteUserById(int id) {
+		MongoDatabase storage = new Database().Connection();
+		MongoCollection<Document>collection = storage.getCollection("Users");
+		Document remover = new Document("Id", id);
+		collection.deleteOne(remover);
+	}
+	*/
+	
 }
