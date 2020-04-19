@@ -256,7 +256,16 @@ public class Database {
 		return null;
 	}
 
-
+	/**
+	 * TODO fill in method pls
+	 * @param email
+	 * @return
+	 *
+	 * use email to find user and return isDriver var
+	 */
+	public boolean isDriver(String email){
+		return false;
+	}
 	/*
 
 	Rides Methods that create rides---------------------------------------------------------------------------------------------------------------------------------------------------

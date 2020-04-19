@@ -4,7 +4,6 @@ import com.example.restservice.Constants.Constants;
 import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.Representation_Classes.Ride;
 import com.example.restservice.database.Database;
-import com.example.restservice.database.Rides;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import java.util.HashMap;
 import java.util.List;
 
 import static com.example.restservice.Controllers.AuthController.checker;
@@ -83,6 +80,9 @@ public class DriverController {
             return new ResponseJson("addRide",false,"invalid time");
         }
 
+        if(!database.isDriver(email))
+            return new ResponseJson("addRide",false,"Not a valid Driver");
+
         //TODO probably will need some check to reverse changes if something breaks halfway through but currently just praying nothing breaks
         String busStopID = database.addBusStop("",location,timeOfArrival.toString(),country,state,city,street,areaCode,true);
         String userID = database.emailToID(email);
@@ -128,6 +128,8 @@ public class DriverController {
         if(database.numOfActivePickUps(rideID)<Constants.MAXBUSSTOPS)
             return new ResponseJson("addBusStop",false,"Reached max amount of pickups");
 
+        if(!database.isDriver(email))
+            return new ResponseJson("addRide",false,"Not a valid Driver");
 
         database.addBusStop(rideID,location,pickUpTime.toString(),country,state,city,street,areaCode,false);
 
@@ -146,7 +148,7 @@ public class DriverController {
                                    @RequestParam(value = "street", defaultValue = "") String street,
                                    @RequestParam(value = "areaCode", defaultValue = "") String areaCode){
 
-        Object value = checker("getPickups",apiKey,tokenID,new String[] {start,country,state,city,street,areaCode});
+        Object value = checker("getMyRides",apiKey,tokenID,new String[] {start,country,state,city,street,areaCode});
         String email;
         if(value instanceof String){
             email = (String) value;
@@ -158,6 +160,9 @@ public class DriverController {
 
         if(userID==null)
             return new ResponseJson("getMyRides",false,"Failed to find userID");
+
+        if(!database.isDriver(email))
+            return new ResponseJson("addRide",false,"Not a valid Driver");
 
         List<Ride> rides = database.getDriverRides(userID,true);
 
