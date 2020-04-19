@@ -21,6 +21,78 @@ public class Rides {
     String EndDate;
     int completed;
     int cancelled;
-    String[] pickupBusStopIDs; //max size 10
+    String[] pickUpBusStopIDs; //max size 10
     String[] PassengerIDs; //max size 15
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(String driverID) {
+        this.driverID = driverID;
+    }
+
+    public String getDestinationBusStopID() {
+        return destinationBusStopID;
+    }
+
+    public void setDestinationBusStopID(String destinationBusStopID) {
+        this.destinationBusStopID = destinationBusStopID;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        EndDate = endDate;
+    }
+
+    public int getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(int completed) {
+        this.completed = completed;
+    }
+
+    public int getCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(int cancelled) {
+        this.cancelled = cancelled;
+    }
+
+    public String[] getPickUpBusStopIDs() {
+        return pickUpBusStopIDs;
+    }
+
+    public void setPickUpBusStopIDs(String[] pickUpBusStopIDs) {
+        this.pickUpBusStopIDs = pickUpBusStopIDs;
+    }
+
+    public String[] getPassengerIDs() {
+        return PassengerIDs;
+    }
+
+    public void setPassengerIDs(String[] passengerIDs) {
+        PassengerIDs = passengerIDs;
+    }
 }

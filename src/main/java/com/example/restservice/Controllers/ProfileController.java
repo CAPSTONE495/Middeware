@@ -91,7 +91,7 @@ public class ProfileController {
                                      @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                      @RequestParam(value = "user", defaultValue = "") String user,
                                      @RequestParam(value = "driverStatus", defaultValue = "") String driverStatus){
-        Object value = checker("updateToAdmin",apiKey,tokenID,new String[] {user,driverStatus});
+        Object value = checker("updateDriver",apiKey,tokenID,new String[] {user,driverStatus});
 
         String email;
 

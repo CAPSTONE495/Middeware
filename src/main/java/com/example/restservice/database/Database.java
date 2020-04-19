@@ -1,6 +1,6 @@
 package com.example.restservice.database;
 
-import org.joda.time.DateTime;
+import com.example.restservice.Representation_Classes.Ride;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.List;
 
 /**
  * database scheme User Table{
@@ -61,6 +63,14 @@ import org.springframework.data.mongodb.core.query.Update;
  * method overview
  * Users{
  *     addUser,getUser,updateGrade,changeAdminStatus,changeDriverStatus,isAdmin
+ * }
+ *
+ * rides{
+ *
+ * }
+ *
+ * busStops{
+ *
  * }
  */
 @Service
@@ -234,6 +244,18 @@ public class Database {
 		}
 	}
 
+	/**
+	 * TODO fill in method pls
+	 * @param email
+	 * @return
+	 *
+	 * use email to get me the id for the user entry
+	 * (this should never happen but) if you cant find the user just return me null, I will check for it
+	 */
+	public String emailToID(String email){
+		return null;
+	}
+
 
 	/*
 
@@ -243,7 +265,7 @@ public class Database {
 
 	/**
 	 *
-	 * @param email
+	 * @param driverID
 	 * @param startTime
 	 * @param endTime
 	 * @param busStopID
@@ -252,7 +274,7 @@ public class Database {
 	 * make a ride object with these values. the int values can be set to 0;
 	 * Return the id of entry after its been added
 	 */
-	public String addRide(String email, DateTime startTime,DateTime endTime,String busStopID){
+	public String addRide(String driverID, String startTime,String endTime,String busStopID){
 
 		return null;
 	}
@@ -268,6 +290,33 @@ public class Database {
 	Rides Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
+
+	/**
+	 * TODO fill in method
+	 * @param driverID
+	 * @return
+	 *
+	 * search for all rides that matches driverID and isActive
+	 * with these rides, regenerate completed entries by pulling info you need
+	 * Return that list
+	 */
+	public List<Ride> getDriverRides(String driverID, boolean isActive){
+
+		return null;
+	}
+
+	/**
+	 *
+	 * @param rideID
+	 * @return
+	 * TODO fill in method
+	 * Search for ride with matching ride id
+	 * return the length of pickupBusStopIDs
+	 */
+	public int numOfActivePickUps(String rideID){
+
+		return 0;
+	}
 
 	/*
 
@@ -285,10 +334,11 @@ public class Database {
 	 * @param areaCode
 	 * @param isDestination
 	 * @return
+	 * /TODO fill in method pls
+	 * make a busStop entry and then return its id,
 	 *
-	 * make a busStop entry and then return its id
 	 */
-	public String addBusStop(String location,String startTime,String country,String state,String city,String street,String areaCode,boolean isDestination,String rideID){
+	public String addBusStop(String rideID,String location,String time,String country,String state,String city,String street,String areaCode,boolean isDestination){
 
 		return null;
 	}

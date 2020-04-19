@@ -1,46 +1,24 @@
-package com.example.restservice.database;
+package com.example.restservice.Representation_Classes;
 
-/*
-BusStop Table{//TODO make this table
- * Primary Key: int BusStopID
- * String locationName
- * String country
- * String state
- * String city
- * String street
- * String areaCode
- * Boolean Destination
- * int PassengerID (repeat for 15 columns)
- */
-public class BusStops {
+import java.util.List;
 
-    String id;
-    String rideID;
+public class BusStop{
     String locationName;
+    String pickUpTime;
     String country;
     String state;
     String city;
     String street;
     String areaCode;
     boolean isDestination;
-    boolean active;
-    String time;//represents the time someone is supposed to be there
-    String[] passengerIDs;
+    List<Passenger> peopleToPickup;
 
-    public String getId() {
-        return id;
+    public String getPickUpTime() {
+        return pickUpTime;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getRideID() {
-        return rideID;
-    }
-
-    public void setRideID(String rideID) {
-        this.rideID = rideID;
+    public void setPickUpTime(String pickUpTime) {
+        this.pickUpTime = pickUpTime;
     }
 
     public String getLocationName() {
@@ -99,27 +77,11 @@ public class BusStops {
         isDestination = destination;
     }
 
-    public boolean isActive() {
-        return active;
+    public List<Passenger> getPeopleToPickup() {
+        return peopleToPickup;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String[] getPassengerIDs() {
-        return passengerIDs;
-    }
-
-    public void setPassengerIDs(String[] passengerIDs) {
-        this.passengerIDs = passengerIDs;
+    public void setPeopleToPickup(List<Passenger> peopleToPickup) {
+        this.peopleToPickup = peopleToPickup;
     }
 }
