@@ -2,16 +2,10 @@ package com.example.restservice.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.restservice.database.Users;
-import com.example.restservice.database.Rides;
-import com.example.restservice.database.Stops;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -32,32 +26,22 @@ import org.springframework.data.mongodb.core.query.Update;
  * int PassengerID (linked to values in BusStop Table)] (repeat for 15 columns)
  * }
  * 
- * BusStop Table{//TODO make this table 
- Primary Key: int BusStopID 
- String locationName 
- String country 
- String state 
- String city 
- String street 
- String areaCode 
- Boolean Destination 
- int PassengerID (repeat for 15 columns)
- }
+ * BusStop Table{//TODO make this table Primary Key: int BusStopID String
+ * locationName String country String state String city String street String
+ * areaCode Boolean Destination int PassengerID (repeat for 15 columns)
  * 
- * Passenger Table{
- //TODO make this table 
- Primary Key: int PassengerID 
- int RiderID (linked to User Table) 
- int RideID (linked to Rides table) 
- DateTime StartDate (DateTime format: MM/dd/YYYY) 
- DateTime EndDate (DateTime format: MM/dd/YYYY) 
- BusStopID pickupLocation (linked to values in BusStop Table)
- }
- ---------------------------------
- for testing purposes change Users.class to "Users" until Users class is ready
+ * }
+ * 
+ * Passenger Table{//TODO make this table Primary Key: int PassengerID int
+ * RiderID (linked to User Table) int RideID (linked to Rides table) DateTime
+ * StartDate (DateTime format: MM/dd/YYYY) DateTime EndDate (DateTime format:
+ * MM/dd/YYYY) BusStopID pickupLocation (linked to values in BusStop Table) }
  */
 @Service
 public class Database {
+	ApplicationContext ctx = new AnnotationConfigApplicationContext(connection.class);
+	MongoOperations mongoOperation = (MongoOperations) ctx.getBean("connector");
+
 	/**
 	 * //TODO fill in method Requires autowire change the constructor as you need
 	 * any creds should be stored in application.properties and called
@@ -68,30 +52,14 @@ public class Database {
 
 	}
 
-	public @Bean MongoDbFactory mongoDbFactory() throws Exception {
-		return new SimpleMongoClientDbFactory(
-				"mongodb+srv://nmolina:OMYTXMcswUTHvdFd@cluster0-v76zg.mongodb.net/Capstone?retryWrites=true&w=majority");
-	}
-
-	public @Bean MongoTemplate mongoTemplate() throws Exception {
-
-		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory());
-
-		return mongoTemplate;
-
-	}
-
-	ApplicationContext ctx = new AnnotationConfigApplicationContext(Database.class);
-	MongoOperations mongoOperation = (MongoOperations) ctx.getBean("mongoTemplate");
-
 	/**
 	 * //TODO fill in method updateGrade method, takes in a string to represent
 	 * grade/type of user and email of user find user, replace grade. If any error
 	 * occurs throw runtime exception affected tables: {User Table}
 	 */
 	public void updateGrade(String email, String grade) {
-		Query lookup = new Query(Criteria.where("Email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("Grade", grade), Users.class);
+		Query lookup = new Query(Criteria.where("email").is(email));
+		mongoOperation.updateFirst(lookup, Update.update("grade", grade), Users.class);
 
 	}
 
@@ -103,8 +71,8 @@ public class Database {
 	 * {User Table}
 	 */
 	public void changeAdminStatus(String email, boolean isAdmin) {
-		Query lookup = new Query(Criteria.where("Email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("Admin", isAdmin), Users.class);
+		Query lookup = new Query(Criteria.where("email").is(email));
+		mongoOperation.updateFirst(lookup, Update.update("admin", isAdmin), Users.class);
 
 	}
 
@@ -115,8 +83,8 @@ public class Database {
 	 * if any error occurs throw runtime exception affected tables: {User Table}
 	 */
 	public void changeDriverStatus(String email, boolean isDriver) {
-		Query lookup = new Query(Criteria.where("Email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("Driver", isDriver), Users.class);
+		Query lookup = new Query(Criteria.where("email").is(email));
+		mongoOperation.updateFirst(lookup, Update.update("driver", isDriver), Users.class);
 
 	}
 
@@ -127,7 +95,7 @@ public class Database {
 	 * affected tables: {User Table}
 	 */
 	public boolean isAdmin(String email) {
-		Query lookup = new Query(Criteria.where("Email").is(email));
+		Query lookup = new Query(Criteria.where("email").is(email));
 		try {
 			Users user = mongoOperation.findOne(lookup, Users.class);
 			return user.getAdminStatus();
@@ -143,13 +111,13 @@ public class Database {
 	 * false; }else{ return true; } affected tables: {User Table}
 	 */
 	public boolean addUser(String email) {
-		Query lookup = new Query();
-		if (lookup.addCriteria(Criteria.where("Email").is(email)) == null) {
+		try {
 			Users user = new Users("first", "last", email, "password");
 			mongoOperation.save(user);
 			return false;
+		} catch (RuntimeException e) {
+			return true;
 		}
-		return true;
 	}
 
 	/**
@@ -158,10 +126,10 @@ public class Database {
 	 * true;
 	 */
 	public boolean addName(String email, String firstName, String lastName) {
-		Query lookup = new Query(Criteria.where("Email").is(email));
+		Query lookup = new Query(Criteria.where("email").is(email));
 		try {
-			mongoOperation.updateFirst(lookup, Update.update("Firstname", firstName), Users.class);
-			mongoOperation.updateFirst(lookup, Update.update("Lastname", lastName), Users.class);
+			mongoOperation.updateFirst(lookup, Update.update("firstname", firstName), Users.class);
+			mongoOperation.updateFirst(lookup, Update.update("lastname", lastName), Users.class);
 			return true;
 		} catch (RuntimeException e) {
 			throw e;
