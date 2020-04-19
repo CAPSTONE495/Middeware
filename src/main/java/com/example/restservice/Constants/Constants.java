@@ -14,7 +14,7 @@ public class Constants {
 
     public static final String ACCEPTEDEMAILDOMAIN = "oswego.edu";
     public static final String PATHTOCREDENTIALS = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator+"resources"+File.separator+"credentials.json";
-
+    public static final String DATEFORMAT = "MM/dd/yyyy HH:mm:ss";
     public static class PathConstants {
         public static final String DRIVERPATH = "/Driver";
         public static final String PASSENGERPATH = "/Passenger";

@@ -17,9 +17,8 @@ public class Rides {
     String id;
     String driverID;
     String destinationBusStopID;
-    //TODO add dateTime vars, im not sure what type these should be.
-    //DateTime startDate
-    //DateTime EndDate
+    String startDate;
+    String EndDate;
     int completed;
     int cancelled;
     String[] pickupBusStopIDs; //max size 10

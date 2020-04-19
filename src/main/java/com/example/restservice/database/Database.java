@@ -1,5 +1,6 @@
 package com.example.restservice.database;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
@@ -79,10 +80,9 @@ public class Database {
 
 	 */
 	/**
-	 *
-	 * email and returns boolean if(email/user does not exist in db){ add user to db
-	 * with values: (pkey(auto increment),email,false,false,null,0,0,0,0) return
-	 * false; }else{ return true; } affected tables: {User Table}
+	 * @param email
+	 * make user and add to db
+	 * affected tables: {User Table}
 	 */
 	public boolean addUser(String email) {
 		try {
@@ -95,9 +95,13 @@ public class Database {
 	}
 
 	/**
+	 * @param email
+	 * @param firstName
+	 * @param lastName
 	 * addName method, takes email, first name, and last name and returns boolean if
 	 * update worked find user by email add firstName and lastname to column return
 	 * true;
+	 * affected tables: {User Table}
 	 */
 	public boolean addName(String email, String firstName, String lastName) {
 		Query lookup = new Query(Criteria.where("email").is(email));
@@ -110,9 +114,12 @@ public class Database {
 		}
 	}
 	/**
+	 * @param email
+	 * TODO fill in this method
 	 * Take an email of user, find user by their email, return their account info in the form of a string
+	 * affected tables: {User Table}
 	*/
-	public String getUserInfo(String email){//TODO complete this method
+	public String getUserInfo(String email){
 		return null;
 	}
 
@@ -121,10 +128,16 @@ public class Database {
 	User methods that edit values---------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
+
 	/**
+	 *
+	 * @param email
+	 * @param grade
+	 *
 	 * updateGrade method, takes in a string to represent
 	 * grade/type of user and email of user find user, replace grade. If any error
-	 * occurs throw runtime exception affected tables: {User Table}
+	 * occurs throw runtime exception
+	 * affected tables: {User Table}
 	 */
 	public void updateGrade(String email, String grade) {
 		try {
@@ -135,12 +148,17 @@ public class Database {
 		}
 	}
 
+
 	/**
+	 *
+	 * @param email
+	 * @param isAdmin
+	 *
 	 * changeAdminStatus method, takes a user's email and a
 	 * boolean that represents their new admin status True for being admin, false
 	 * for being standard user. find user, change admin value to isAdmin
-	 * representation if any error occurs throw runtime exception affected tables:
-	 * {User Table}
+	 * representation if any error occurs throw runtime exception
+	 * affected tables: {User Table}
 	 */
 	public void changeAdminStatus(String email, boolean isAdmin) {
 		try {
@@ -151,11 +169,17 @@ public class Database {
 		}
 	}
 
+
 	/**
+	 *
+	 * @param email
+	 * @param isDriver
+	 *
 	 * changeDriverStatus method, takes a user's email and a
 	 * boolean that represents their new driver status True for being driver, false
 	 * for not a driver. find user, change driver value to isDriver representation
-	 * if any error occurs throw runtime exception affected tables: {User Table}
+	 * if any error occurs throw runtime exception
+	 * affected tables: {User Table}
 	 */
 	public void changeDriverStatus(String email, boolean isDriver) {
 		try {
@@ -166,9 +190,14 @@ public class Database {
 		}
 	}
 
+
 	/**
 	 *
+	 * @param email
+	 * @param seats
+	 * TODO fill in this method
 	 * find the user by email, update seat value with seats.
+	 * affected tables: {User Table}
 	 */
 	public void updateSeats(String email,int seats){
 		try{
@@ -184,7 +213,12 @@ public class Database {
 	User Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
+
 	/**
+	 *
+	 * @param email
+	 * @return
+	 *
 	 * isAdmin method, takes user's email and returns a
 	 * boolean to tell if the account has admin priv or not find user, read isAdmin
 	 * value, return isAdmin value if any error occurs throw runtime exception
@@ -199,4 +233,90 @@ public class Database {
 			throw new RuntimeException("Error with isAdmin: "+e.getLocalizedMessage());
 		}
 	}
+
+
+	/*
+
+	Rides Methods that create rides---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/**
+	 *
+	 * @param email
+	 * @param startTime
+	 * @param endTime
+	 * @param busStopID
+	 *
+	 * TODO fill in method
+	 * make a ride object with these values. the int values can be set to 0;
+	 * Return the id of entry after its been added
+	 */
+	public String addRide(String email, DateTime startTime,DateTime endTime,String busStopID){
+
+		return null;
+	}
+
+	/*
+
+	Rides Methods that update ride values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/*
+
+	Rides Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/*
+
+	BusStops Methods that create BusStops---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/**
+	 *
+	 * @param location
+	 * @param country
+	 * @param state
+	 * @param city
+	 * @param street
+	 * @param areaCode
+	 * @param isDestination
+	 * @return
+	 *
+	 * make a busStop entry and then return its id
+	 */
+	public String addBusStop(String location,String startTime,String country,String state,String city,String street,String areaCode,boolean isDestination,String rideID){
+
+		return null;
+	}
+
+	/*
+
+	BusStops Methods that edit values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/**
+	 *
+	 * @param rideID
+	 * @param busStopID
+	 * TODO make method
+	 * Find the busStop entry by id
+	 * Then set rideID = to rideID
+	 */
+	public void linkRideAndBusStop(String busStopID, String rideID){
+
+	}
+
+
+	/*
+
+	BusStop Methods that read values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+
 }

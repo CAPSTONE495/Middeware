@@ -15,6 +15,7 @@ BusStop Table{//TODO make this table
 public class BusStops {
 
     String id;
+    String rideID;
     String locationName;
     String country;
     String state;
@@ -22,8 +23,7 @@ public class BusStops {
     String street;
     String areaCode;
     boolean isDestination;
-    //DateTime pickupTime;
-
+    String pickupTime;
     String[] passengerIDs;
 
 }

@@ -38,7 +38,7 @@ public class Users {
 	
 	public Users(String firstname,String lastname, String email, String password) {
 		super();
-		this.firstname = firstname;
+		this.firstname = firstname;//TODO you can set first and last name to "" as they will be added at a later time
 		this.lastname = lastname;
 		this.email = email;
 		this.password = password;

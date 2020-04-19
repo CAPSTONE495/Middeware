@@ -35,7 +35,7 @@ public class ProfileController {
         return new ResponseJson("add name",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateGrade(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                     @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                     @RequestParam(value = "grade", defaultValue = "") String grade){
@@ -57,7 +57,7 @@ public class ProfileController {
 
         return new ResponseJson("update grade",true,"");
     }
-    @RequestMapping(value = Constants.PathConstants.PROFILEPATH+"/updateAdmin",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = Constants.PathConstants.PROFILEPATH+"/updateAdmin",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateAdmin(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                     @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                     @RequestParam(value = "user", defaultValue = "") String user,
@@ -86,7 +86,7 @@ public class ProfileController {
 
         return new ResponseJson("update admin",true,"");
     }
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateDriver",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateDriver",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateDriver(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                      @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                      @RequestParam(value = "user", defaultValue = "") String user,
@@ -117,7 +117,7 @@ public class ProfileController {
         return  new ResponseJson("update driver",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateSeats",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateSeats",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateMaxSeats(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                        @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                        @RequestParam(value = "totalSeats", defaultValue = "") String seats){
