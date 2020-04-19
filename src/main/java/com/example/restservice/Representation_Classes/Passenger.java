@@ -4,8 +4,8 @@ import org.joda.time.DateTime;
 
 public class Passenger{
     String rider;
-    DateTime startDate;
-    DateTime endDate;
+    String startDate;
+    String endDate;
 
     public String getRider() {
         return rider;
@@ -15,19 +15,19 @@ public class Passenger{
         this.rider = rider;
     }
 
-    public DateTime getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DateTime startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public DateTime getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DateTime endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 }

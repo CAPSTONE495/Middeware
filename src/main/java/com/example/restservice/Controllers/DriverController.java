@@ -156,6 +156,9 @@ public class DriverController {
 
         String userID = database.emailToID(email);
 
+        if(userID==null)
+            return new ResponseJson("getMyRides",false,"Failed to find userID");
+
         List<Ride> rides = database.getDriverRides(userID,true);
 
         return new ResponseJson("getMyRides",true,"",rides);
