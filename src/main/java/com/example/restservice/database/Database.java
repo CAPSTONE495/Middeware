@@ -4,19 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.example.restservice.database.Users;
 import com.example.restservice.database.Rides;
 import com.example.restservice.database.Stops;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -37,23 +32,32 @@ import org.springframework.data.mongodb.core.query.Update;
  * int PassengerID (linked to values in BusStop Table)] (repeat for 15 columns)
  * }
  * 
- * BusStop Table{//TODO make this table Primary Key: int BusStopID String
- * locationName String country String state String city String street String
- * areaCode Boolean Destination int PassengerID (repeat for 15 columns)
+ * BusStop Table{//TODO make this table 
+ Primary Key: int BusStopID 
+ String locationName 
+ String country 
+ String state 
+ String city 
+ String street 
+ String areaCode 
+ Boolean Destination 
+ int PassengerID (repeat for 15 columns)
+ }
  * 
- * }
- * 
- * Passenger Table{//TODO make this table Primary Key: int PassengerID int
- * RiderID (linked to User Table) int RideID (linked to Rides table) DateTime
- * StartDate (DateTime format: MM/dd/YYYY) DateTime EndDate (DateTime format:
- * MM/dd/YYYY) BusStopID pickupLocation (linked to values in BusStop Table) }
+ * Passenger Table{
+ //TODO make this table 
+ Primary Key: int PassengerID 
+ int RiderID (linked to User Table) 
+ int RideID (linked to Rides table) 
+ DateTime StartDate (DateTime format: MM/dd/YYYY) 
+ DateTime EndDate (DateTime format: MM/dd/YYYY) 
+ BusStopID pickupLocation (linked to values in BusStop Table)
+ }
+ ---------------------------------
+ for testing purposes change Users.class to "Users" until Users class is ready
  */
 @Service
 public class Database {
-	Users user;
-	Rides ride;
-	Stops stop;
-
 	/**
 	 * //TODO fill in method Requires autowire change the constructor as you need
 	 * any creds should be stored in application.properties and called
@@ -116,89 +120,51 @@ public class Database {
 
 	}
 
-    /**
-     //TODO fill in method
-    isAdmin method, takes user's email and returns a boolean to tell if the account has admin priv or not
-     find user, read isAdmin value, return isAdmin value
-     if any error occurs throw runtime exception
-     affected tables: {User Table}
-     */
-    public boolean isAdmin(String email){
-        return false;
-    }
-    /**
-     //TODO fill in method
-    Adduser method, takes in a string that is the users email and returns boolean
-     if(email/user does not exist in db){
-        add user to db
-            with values:
-            (pkey(auto increment),email,false,false,null,0,0,0,0)
-        return false;
-     }else{
-        return true;
-     }
-     affected tables: {User Table}
-     */
-    public boolean addUser(String email){
-        return false;
-    }
-
-    /**
-    addName method, takes email, first name, and last name and returns boolean if update worked
-    find user by email
-    add firstName and lastname to column
-    return true;
-     */
-    public boolean addName(String email, String firstName, String lastName){
-        return false;
-    }
-
-
-
-
-
-    /*
-    If you need to test a non static method, test it in RestServiceApplication.java
-     */
-	/*
-	possible user methods
-	public void addUser(int id, String first, String last, String email) {
-		MongoDatabase storage = new Database().Connection();
-		MongoCollection<Document> collection = storage.getCollection("Users");
-		Document doc = new Document("Id", id).append("Firstname", first).append("Lastname", last).append("Email", email);
-		collection.insertOne(doc);
+	/**
+	 * //TODO fill in method isAdmin method, takes user's email and returns a
+	 * boolean to tell if the account has admin priv or not find user, read isAdmin
+	 * value, return isAdmin value if any error occurs throw runtime exception
+	 * affected tables: {User Table}
+	 */
+	public boolean isAdmin(String email) {
+		Query lookup = new Query(Criteria.where("Email").is(email));
+		try {
+			Users user = mongoOperation.findOne(lookup, Users.class);
+			return user.getAdminStatus();
+		} catch (RuntimeException e) {
+			throw e;
 		}
-	
-	public Document searchUserById(int id) {		
-		MongoDatabase storage = new Database().Connection();
-		MongoCollection<Document>collection = storage.getCollection("Users");
-		Document search = new Document("Id", id);
-		Document user = (Document) collection.find(search);
-		return user;
 	}
-	
-	public void updateUser(int id, Document change) {
-		Document user = searchUserById(id);
-		MongoDatabase storage = new Database().Connection();
-		MongoCollection<Document>collection = storage.getCollection("Users");
-		collection.updateOne(user, change);
+
+	/**
+	 * //TODO fill in method Adduser method, takes in a string that is the users
+	 * email and returns boolean if(email/user does not exist in db){ add user to db
+	 * with values: (pkey(auto increment),email,false,false,null,0,0,0,0) return
+	 * false; }else{ return true; } affected tables: {User Table}
+	 */
+	public boolean addUser(String email) {
+		Query lookup = new Query();
+		if (lookup.addCriteria(Criteria.where("Email").is(email)) == null) {
+			Users user = new Users("first", "last", email, "password");
+			mongoOperation.save(user);
+			return false;
+		}
+		return true;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public ArrayList<Document> getAllUsers() {
-		MongoDatabase storage = new Database().Connection();
-		MongoCollection<Document> collection = storage.getCollection("Users");
-		ArrayList<Document> users = new ArrayList<Document>();
-		users =  (ArrayList<Document>) collection.find();
-		return users;
+
+	/**
+	 * addName method, takes email, first name, and last name and returns boolean if
+	 * update worked find user by email add firstName and lastname to column return
+	 * true;
+	 */
+	public boolean addName(String email, String firstName, String lastName) {
+		Query lookup = new Query(Criteria.where("Email").is(email));
+		try {
+			mongoOperation.updateFirst(lookup, Update.update("Firstname", firstName), Users.class);
+			mongoOperation.updateFirst(lookup, Update.update("Lastname", lastName), Users.class);
+			return true;
+		} catch (RuntimeException e) {
+			throw e;
+		}
 	}
-	
-	public void deleteUserById(int id) {
-		MongoDatabase storage = new Database().Connection();
-		MongoCollection<Document>collection = storage.getCollection("Users");
-		Document remover = new Document("Id", id);
-		collection.deleteOne(remover);
-	}
-	*/
-	
 }
