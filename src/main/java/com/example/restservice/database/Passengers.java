@@ -13,9 +13,8 @@ public class Passengers {
     String id;
     String riderID;
     String rideID;
-    //TODO datetime setup, idk how it works for mongodb
-    //DateTime startDate
-    //DateTime endDate
+    String startDate;
+    String endDate;
     String[] pickupLocations;
 
 }
