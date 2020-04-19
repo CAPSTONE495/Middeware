@@ -1,7 +1,6 @@
 package com.example.restservice.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.example.restservice.database.Users;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
