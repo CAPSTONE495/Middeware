@@ -268,7 +268,7 @@ public class Database {
 	}
 	/*
 
-	Rides Methods that create rides---------------------------------------------------------------------------------------------------------------------------------------------------
+	Rides Methods that create or delete rides---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
 
@@ -286,6 +286,18 @@ public class Database {
 	public String addRide(String driverID, String startTime,String endTime,String busStopID){
 
 		return null;
+	}
+
+	/**
+	 * TODO fill in method pls
+	 * @param rideID
+	 *
+	 * find ride with that rideID
+	 * Remove all passengers if any are there
+	 * Change
+	 */
+	public void deleteRide(String rideID){
+
 	}
 
 	/*

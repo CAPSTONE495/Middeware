@@ -139,16 +139,9 @@ public class DriverController {
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/getMyRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson getMyRides(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                   @RequestParam(value = "locationName", defaultValue = "") String location,
-                                   @RequestParam(value = "requestedTime", defaultValue = "") String start,
-                                   @RequestParam(value = "country", defaultValue = "") String country,
-                                   @RequestParam(value = "state", defaultValue = "") String state,
-                                   @RequestParam(value = "city", defaultValue = "") String city,
-                                   @RequestParam(value = "street", defaultValue = "") String street,
-                                   @RequestParam(value = "areaCode", defaultValue = "") String areaCode){
+                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID){
 
-        Object value = checker("getMyRides",apiKey,tokenID,new String[] {start,country,state,city,street,areaCode});
+        Object value = checker("getMyRides",apiKey,tokenID,new String[] {});
         String email;
         if(value instanceof String){
             email = (String) value;
@@ -169,6 +162,42 @@ public class DriverController {
         return new ResponseJson("getMyRides",true,"",rides);
 
     }
+
+
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/deleteRide",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson deleteRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
+                                   @RequestParam(value = "rideID", defaultValue = "") String rideID){
+        Object value = checker("getMyRides",apiKey,tokenID,new String[] {rideID});
+        String email;
+        if(value instanceof String){
+            email = (String) value;
+        }else{
+            return (ResponseJson) value;
+        }
+
+
+
+        return new ResponseJson("getMyRides",true,"");
+    }
+
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/cancelRide",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson cancelRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
+                                   @RequestParam(value = "rideID", defaultValue = "") String rideID){
+        Object value = checker("getMyRides",apiKey,tokenID,new String[] {rideID});
+        String email;
+        if(value instanceof String){
+            email = (String) value;
+        }else{
+            return (ResponseJson) value;
+        }
+
+
+
+        return new ResponseJson("getMyRides",true,"");
+    }
+
 
 
 
