@@ -93,7 +93,7 @@ public class DriverController {
         return new ResponseJson("addRide",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/c",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/addBusStop",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson addBusStop(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                    @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                    @RequestParam(value = "rideID", defaultValue = "") String rideID,
