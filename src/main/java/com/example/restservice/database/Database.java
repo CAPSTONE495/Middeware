@@ -55,73 +55,31 @@ import org.springframework.data.mongodb.core.query.Update;
  * DateTime StartDate (DateTime format: MM/dd/YYYY)
  * DateTime EndDate (DateTime format: MM/dd/YYYY)
  * int BusStopID pickupLocation (linked to values in BusStop Table) }
+ *
+ *
+ * method overview
+ * Users{
+ *     addUser,getUser,updateGrade,changeAdminStatus,changeDriverStatus,isAdmin
+ * }
  */
 @Service
 public class Database {
 	ApplicationContext ctx = new AnnotationConfigApplicationContext(connection.class);
 	MongoOperations mongoOperation = (MongoOperations) ctx.getBean("connector");
 
-	/**
-	 * //TODO fill in method Requires autowire change the constructor as you need
-	 * any creds should be stored in application.properties and called
-	 * using @Value("${'value name'}")
-	 */
 	@Autowired
 	public Database() {
 
 	}
 
-	/**
-	 * //TODO fill in method updateGrade method, takes in a string to represent
-	 * grade/type of user and email of user find user, replace grade. If any error
-	 * occurs throw runtime exception affected tables: {User Table}
-	 */
-	public void updateGrade(String email, String grade) {
-		Query lookup = new Query(Criteria.where("email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("grade", grade), Users.class);
-	}
 
-	/**
-	 * //TODO fill in method changeAdminStatus method, takes a user's email and a
-	 * boolean that represents their new admin status True for being admin, false
-	 * for being standard user. find user, change admin value to isAdmin
-	 * representation if any error occurs throw runtime exception affected tables:
-	 * {User Table}
-	 */
-	public void changeAdminStatus(String email, boolean isAdmin) {
-		Query lookup = new Query(Criteria.where("email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("admin", isAdmin), Users.class);
-	}
+	/*
 
-	/**
-	 * //TODO fill in method changeDriverStatus method, takes a user's email and a
-	 * boolean that represents their new driver status True for being driver, false
-	 * for not a driver. find user, change driver value to isDriver representation
-	 * if any error occurs throw runtime exception affected tables: {User Table}
-	 */
-	public void changeDriverStatus(String email, boolean isDriver) {
-		Query lookup = new Query(Criteria.where("email").is(email));
-		mongoOperation.updateFirst(lookup, Update.update("driver", isDriver), Users.class);
-	}
+	User methods that create or finalize entries---------------------------------------------------------------------------------------------------------------------------------------------
 
-	/**
-	 * //TODO fill in method isAdmin method, takes user's email and returns a
-	 * boolean to tell if the account has admin priv or not find user, read isAdmin
-	 * value, return isAdmin value if any error occurs throw runtime exception
-	 * affected tables: {User Table}
 	 */
-	public boolean isAdmin(String email) {
-		Query lookup = new Query(Criteria.where("email").is(email));
-		try {
-			Users user = mongoOperation.findOne(lookup, Users.class);
-			return user.getAdminStatus();
-		} catch (Exception e) {
-			throw new RuntimeException("Error with isAdmin: "+e.getLocalizedMessage());
-		}
-	}
-
 	/**
-	 * //TODO fill in method Adduser method, takes in a string that is the users
+	 *
 	 * email and returns boolean if(email/user does not exist in db){ add user to db
 	 * with values: (pkey(auto increment),email,false,false,null,0,0,0,0) return
 	 * false; }else{ return true; } affected tables: {User Table}
@@ -149,6 +107,96 @@ public class Database {
 			return true;
 		} catch (Exception e) {
 			throw new RuntimeException("Error with addName: "+e.getLocalizedMessage());
+		}
+	}
+	/**
+	 * Take an email of user, find user by their email, return their account info in the form of a string
+	*/
+	public String getUserInfo(String email){//TODO complete this method
+		return null;
+	}
+
+	/*
+
+	User methods that edit values---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+	/**
+	 * updateGrade method, takes in a string to represent
+	 * grade/type of user and email of user find user, replace grade. If any error
+	 * occurs throw runtime exception affected tables: {User Table}
+	 */
+	public void updateGrade(String email, String grade) {
+		try {
+			Query lookup = new Query(Criteria.where("email").is(email));
+			mongoOperation.updateFirst(lookup, Update.update("grade", grade), Users.class);
+		}catch (Exception e){
+			throw new RuntimeException("Failed to Update grade: "+e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * changeAdminStatus method, takes a user's email and a
+	 * boolean that represents their new admin status True for being admin, false
+	 * for being standard user. find user, change admin value to isAdmin
+	 * representation if any error occurs throw runtime exception affected tables:
+	 * {User Table}
+	 */
+	public void changeAdminStatus(String email, boolean isAdmin) {
+		try {
+			Query lookup = new Query(Criteria.where("email").is(email));
+			mongoOperation.updateFirst(lookup, Update.update("admin", isAdmin), Users.class);
+		}catch(Exception e){
+			throw new RuntimeException("failed to change admin status: "+e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * changeDriverStatus method, takes a user's email and a
+	 * boolean that represents their new driver status True for being driver, false
+	 * for not a driver. find user, change driver value to isDriver representation
+	 * if any error occurs throw runtime exception affected tables: {User Table}
+	 */
+	public void changeDriverStatus(String email, boolean isDriver) {
+		try {
+			Query lookup = new Query(Criteria.where("email").is(email));
+			mongoOperation.updateFirst(lookup, Update.update("driver", isDriver), Users.class);
+		}catch(Exception e){
+			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 *
+	 * find the user by email, update seat value with seats.
+	 */
+	public void updateSeats(String email,int seats){
+		try{
+
+		}catch(Exception e){
+			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
+		}
+	}
+
+
+	/*
+
+	User Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+	/**
+	 * isAdmin method, takes user's email and returns a
+	 * boolean to tell if the account has admin priv or not find user, read isAdmin
+	 * value, return isAdmin value if any error occurs throw runtime exception
+	 * affected tables: {User Table}
+	 */
+	public boolean isAdmin(String email) {
+		Query lookup = new Query(Criteria.where("email").is(email));
+		try {
+			Users user = mongoOperation.findOne(lookup, Users.class);
+			return user.getAdminStatus();
+		} catch (Exception e) {
+			throw new RuntimeException("Error with isAdmin: "+e.getLocalizedMessage());
 		}
 	}
 }

@@ -21,7 +21,7 @@ public class ProfileController {
                                 @RequestParam(value = "firstName", defaultValue = "") String fName,
                                 @RequestParam(value = "lastName", defaultValue = "") String lName){
 
-        Object value = checker("updateGrade",apiKey,tokenID,new String[] {fName,lName});
+        Object value = checker("addName",apiKey,tokenID,new String[] {fName,lName});
 
         String email;
         if(value instanceof String){
@@ -30,7 +30,7 @@ public class ProfileController {
             return (ResponseJson) value;
         }
 
-
+        database.addName(email,fName,lName);
 
         return new ResponseJson("add name",true,"");
     }
@@ -43,7 +43,7 @@ public class ProfileController {
         Object value = checker("updateGrade",apiKey,tokenID,new String[] {grade});
 
         if(!(grade.equals("fr")||grade.equals("so")||grade.equals("jr")||grade.equals("se")||grade.equals("gr")||grade.equals("fa")))
-            return new ResponseJson("update grade",false,"Invalid entry");
+            return new ResponseJson("update grade",false,"Invalid grade entry");
 
         String email;
 
@@ -117,7 +117,49 @@ public class ProfileController {
         return  new ResponseJson("update driver",true,"");
     }
 
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateSeats",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson updateMaxSeats(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+                                       @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
+                                       @RequestParam(value = "totalSeats", defaultValue = "") String seats){
+        Object value = checker("updateMaxSeats",apiKey,tokenID,new String[] {seats});
+        String email;
+        int openSeats;
+        if(value instanceof String){
+            email = (String) value;
+        }else{
+            return (ResponseJson) value;
+        }
 
+        try{
+            openSeats = Integer.parseInt(seats);
+        }catch(Exception e){
+            return new ResponseJson("updateSeats",false,"Failed because seat value is not numeric");
+        }
+
+        if(openSeats<=0 || openSeats >= Constants.MAXSEATS){
+            return new ResponseJson("updateSeats",false,"Failed because seat value is not a valid number");
+        }
+
+        database.updateSeats(email,openSeats);
+
+        return new ResponseJson("updateSeats",true,"");
+    }
+
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAccountInfo",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson getAccountInfo(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+                                @RequestParam(value = "tokenID", defaultValue = "") String tokenID){
+        Object value = checker("getAccountInfo",apiKey,tokenID,new String[] {});
+
+        String email;
+
+        if(value instanceof String){
+            email = (String) value;
+        }else{
+            return (ResponseJson) value;
+        }
+
+        return new ResponseJson("getAccountInfo",true,database.getUserInfo(email));
+    }
 
 
 }

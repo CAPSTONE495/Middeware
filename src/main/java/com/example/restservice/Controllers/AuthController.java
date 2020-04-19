@@ -123,10 +123,10 @@ public class AuthController {
 
         String email = getEmail(tokenID);
         if(email==null)
-            return new ResponseJson("update grade",false,"unable to extract email");
+            return new ResponseJson(action,false,"unable to extract email");
 
         if(!Constants.APIKeyMapper.checkAPIKey(email,apiKey))
-            return new ResponseJson("update grade",false,"invalid apiKey");
+            return new ResponseJson(action,false,"invalid apiKey");
 
         return email;
     }
