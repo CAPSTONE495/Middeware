@@ -294,7 +294,8 @@ public class Database {
 	 *
 	 * find ride with that rideID
 	 * Remove all passengers if any are there
-	 * Change
+	 * empty all queues of riders
+	 * Change active value to false;
 	 */
 	public void deleteRide(String rideID){
 
@@ -305,6 +306,19 @@ public class Database {
 	Rides Methods that update ride values---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
+
+	/**
+	 * TODO fill in method pls
+	 * @param rideID
+	 * @return
+	 * Find the ride that they want to cancel
+	 * go through active riders, if their start date is on the cancel date then push their startDate a week forward. (must check if start Date is passed end date, if so then remove that person and push person in queue up)
+	 * return array of passengerIDs that lost their ride 
+	 */
+	public String[] cancelRide(String rideID,String date){
+
+		return null;
+	}
 
 	/*
 

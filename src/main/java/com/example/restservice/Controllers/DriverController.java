@@ -176,15 +176,19 @@ public class DriverController {
             return (ResponseJson) value;
         }
 
+        if(!database.isDriver(email))
+            return new ResponseJson("addRide",false,"Not a valid Driver");
 
+        database.deleteRide(rideID);
 
         return new ResponseJson("getMyRides",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/cancelRide",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/cancelRide",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson cancelRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                    @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                   @RequestParam(value = "rideID", defaultValue = "") String rideID){
+                                   @RequestParam(value = "rideID", defaultValue = "") String rideID,
+                                   @RequestParam(value = "time", defaultValue = "") String time){
         Object value = checker("getMyRides",apiKey,tokenID,new String[] {rideID});
         String email;
         if(value instanceof String){
@@ -193,7 +197,20 @@ public class DriverController {
             return (ResponseJson) value;
         }
 
+        if(!database.isDriver(email))
+            return new ResponseJson("addRide",false,"Not a valid Driver");
 
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
+        DateTime pickUpTime;
+        try{
+            pickUpTime = formatter.parseDateTime(time);
+        }catch (Exception e){
+            return new ResponseJson("addBusStop",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
+        }
+
+        String[] lostRiders = database.cancelRide(rideID,pickUpTime.toString());
+
+        //TODO not enough time but, at some point you need to take the lostRiders and notify the users they lost their ride: probably through email
 
         return new ResponseJson("getMyRides",true,"");
     }
