@@ -5,7 +5,7 @@ target/
 !**/src/test/**
 /src/main/resources/application.properties
 /src/main/resources/credentials.json
-/src/main/java/com/example/restservoce/database/connection.java
+/src/main/java/com/example/restservice/database/connection.java
 ### STS ###
 .apt_generated
 .classpath
