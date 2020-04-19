@@ -10,6 +10,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -31,7 +32,7 @@ public class AuthController {
     Database database;
 
 
-    @RequestMapping(value=PathConstants.AUTHPATH+"/gettoken",method = RequestMethod.POST)
+    @RequestMapping(value=PathConstants.AUTHPATH+"/gettoken",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public TokenJson authTokin(@RequestParam(value = "tokenID", defaultValue = "") String tokenID){
 
         //check if required info is present

@@ -3,13 +3,13 @@ package com.example.restservice.database;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 /*
-User Table{//TODO make this table
+User Table{
     Primary Key: int User ID
     String FirstName
     String LastName
     String Email
     boolean/bit Is_Driver
-    int seats //TODO add this column if table is already made
+    int seats
     boolean/bit Is_Admin
     char[2] Grade
     int Total_Rides_Taken
@@ -28,13 +28,13 @@ public class Users {
 	String email;
 	boolean driver;
 	boolean admin;
-	int grade;
+	int grade;//TODO please change this value to a string
 	int num_seats;
 	int rides_taken;
 	int passenger_taken;
 	double distance_traveled;
-	double total_distance;
-	String password;
+	double total_distance;//this value represents the time for all the rides
+	String password;//TODO you can remove this value
 	
 	public Users(String firstname,String lastname, String email, String password) {
 		super();
@@ -42,6 +42,16 @@ public class Users {
 		this.lastname = lastname;
 		this.email = email;
 		this.password = password;
+		//TODO I add some initilizers for when a new user is made. Please double check that this is fine.
+		this.driver=false;
+		this.admin=false;
+		this.num_seats = 0;
+		this.rides_taken = 0;
+		this.passenger_taken = 0;
+		this.distance_traveled=0;
+		this.total_distance=0;
+
+
 	}
 	
 	public String getId() {

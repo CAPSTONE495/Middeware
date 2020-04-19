@@ -4,6 +4,7 @@ import com.example.restservice.Constants.Constants;
 import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.database.Database;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ import static com.example.restservice.Controllers.AuthController.checker;
 public class ProfileController {
     @Autowired
     Database database;
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addName",method = RequestMethod.POST)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addName",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson addName(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                 @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                 @RequestParam(value = "firstName", defaultValue = "") String fName,
@@ -34,7 +35,7 @@ public class ProfileController {
         return new ResponseJson("add name",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.POST)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateGrade(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                     @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                     @RequestParam(value = "grade", defaultValue = "") String grade){
@@ -56,7 +57,7 @@ public class ProfileController {
 
         return new ResponseJson("update grade",true,"");
     }
-    @RequestMapping(value = Constants.PathConstants.PROFILEPATH+"/updateAdmin",method = RequestMethod.POST)
+    @RequestMapping(value = Constants.PathConstants.PROFILEPATH+"/updateAdmin",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateAdmin(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                     @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                     @RequestParam(value = "user", defaultValue = "") String user,
@@ -85,7 +86,7 @@ public class ProfileController {
 
         return new ResponseJson("update admin",true,"");
     }
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateDriver",method = RequestMethod.POST)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateDriver",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateDriver(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                      @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
                                      @RequestParam(value = "user", defaultValue = "") String user,
