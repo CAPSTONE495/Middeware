@@ -313,7 +313,7 @@ public class Database {
 	 * @return
 	 * Find the ride that they want to cancel
 	 * go through active riders, if their start date is on the cancel date then push their startDate a week forward. (must check if start Date is passed end date, if so then remove that person and push person in queue up)
-	 * return array of passengerIDs that lost their ride 
+	 * return array of passengerIDs that lost their ride
 	 */
 	public String[] cancelRide(String rideID,String date){
 
