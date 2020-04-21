@@ -15,6 +15,6 @@ public class Passengers {
     String rideID;
     String startDate;
     String endDate;
-    String[] pickupLocations;
+    String pickupLocations;
 
 }

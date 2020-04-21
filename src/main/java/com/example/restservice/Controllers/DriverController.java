@@ -137,8 +137,8 @@ public class DriverController {
     }
 
 
-    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/getMyRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getMyRides(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/getMyDrives",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson getMyDrives(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
                                    @RequestParam(value = "tokenID", defaultValue = "") String tokenID){
 
         Object value = checker("getMyRides",apiKey,tokenID,new String[] {});
@@ -180,6 +180,8 @@ public class DriverController {
             return new ResponseJson("addRide",false,"Not a valid Driver");
 
         database.deleteRide(rideID);
+
+        //TODO not enough time but, at some point you need to take the lostRiders and notify the users they lost their ride: probably through email
 
         return new ResponseJson("getMyRides",true,"");
     }

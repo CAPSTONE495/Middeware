@@ -353,6 +353,28 @@ public class Database {
 		return 0;
 	}
 
+	/**
+	 * TODO fill in method
+	 * @param locationName
+	 * @param time
+	 * @param country
+	 * @param state
+	 * @param city
+	 * @param address
+	 * @param areaCode
+	 * @return
+	 *
+	 * Go through all busStops, pull everyone that matches the criteria (you can make the time in a range of +-15 min from whatever time is given)
+	 * Go through that list and remove any busStops that are not linked to an active Ride or if ride endTime is past Current Time.
+	 * Go through that list and check if there is an open seat for the user.
+	 * (Note: not enough time now, but its recommenced to make this shit parallel with a fork join of the org list because after enough uses that list is gonna be hug)
+	 *
+	 */
+	public List<Ride> getSearchedBusStops(String locationName, String time, String country, String state, String city, String address, String areaCode){
+
+		return null;
+	}
+
 	/*
 
 	BusStops Methods that create BusStops---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -403,5 +425,72 @@ public class Database {
 
 	 */
 
+	/*
+
+	Passengers Methods that create values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/*
+
+	Passengers Methods that update values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/**
+	 * TODO fill in method
+	 * @param riderID
+	 * @param startTime
+	 * @param endTime
+	 * @param pickupID
+	 * (pickupID is linked to a busStop ID)
+	 *
+	 * use pickupID to find ride entry
+	 * Check if ride is active
+	 * check if ride has open slot for passenger
+	 * Note: if false for any of these checks just stop here and return false
+	 * Create Passenger
+	 * Add passenger id to slot in correct location in queue
+	 */
+	public boolean addPassenger(String riderID, String startTime, String endTime, String pickupID){
+
+		return false;
+	}
+
+	/**
+	 * TODO fill in method
+	 * @param riderID
+	 * @return
+	 *
+	 * find passenger with that rider id
+	 * save the ride id
+	 * find the ride
+	 * Remove passenger from queue
+	 */
+	public void removePassenger(String riderID){
+
+
+	}
+
+	/*
+
+	Passengers Methods that read values---------------------------------------------------------------------------------------------------------------------------------------------------
+
+	 */
+
+	/**
+	 * TODO fill in method
+	 * @param riderID
+	 * @param isActive
+	 * @return
+	 *
+	 * Go through passenger table and get all instances where riderID = riderID
+	 * From that list, regenerate all rides buy using the rideID in Passengers.
+	 * return regenerated ride list
+	 */
+	public List<Ride> getMyRides(String riderID, boolean isActive){
+
+		return null;
+	}
 
 }
