@@ -25,23 +25,21 @@ public class Users {
 	private String id;	
 	String firstname;
 	String lastname;
+	String grade;
 	String email;
 	boolean driver;
 	boolean admin;
-	int grade;//TODO please change this value to a string
 	int num_seats;
 	int rides_taken;
 	int passenger_taken;
 	double distance_traveled;
-	double total_distance;//this value represents the time for all the rides
-	String password;//TODO you can remove this value
+	double total_time;//this value represents the time for all the rides
 	
-	public Users(String firstname,String lastname, String email, String password) {
+	public Users(String firstname,String lastname, String email) {
 		super();
 		this.firstname = firstname;//TODO you can set first and last name to "" as they will be added at a later time
 		this.lastname = lastname;
 		this.email = email;
-		this.password = password;
 		//TODO I add some initilizers for when a new user is made. Please double check that this is fine.
 		this.driver=false;
 		this.admin=false;
@@ -49,7 +47,7 @@ public class Users {
 		this.rides_taken = 0;
 		this.passenger_taken = 0;
 		this.distance_traveled=0;
-		this.total_distance=0;
+		this.total_time=0;
 
 
 	}
@@ -78,6 +76,14 @@ public class Users {
 		this.lastname = lname;
 	}
 	
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -100,14 +106,6 @@ public class Users {
 
 	public void setDriverStatus(boolean isDriver) {
 		this.driver = isDriver;
-	}
-	
-	public int getGrade() {
-		return grade;
-	}
-
-	public void setGrade(int grade) {
-		this.grade = grade;
 	}
 	
 	public int getSeats() {
@@ -143,20 +141,12 @@ public class Users {
 		distance_traveled = distance;
 	}
 	
-	public double getTotalDistance() {
-		return distance_traveled;
+	public double getTotalTime() {
+		return total_time;
 	}
 
-	public void setTotalDistance(int total) {
-		total_distance = total;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setTotalTime(int total) {
+		total_time = total;
 	}
 
 }
