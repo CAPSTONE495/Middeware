@@ -96,7 +96,7 @@ public class Database {
 	 */
 	public boolean addUser(String email) {
 		try {
-			Users user = new Users("first", "last", email, "password");
+			Users user = new Users("first", "last", email);
 			mongoOperation.save(user);
 			return false;
 		} catch (Exception e) {
