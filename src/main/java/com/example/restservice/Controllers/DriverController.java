@@ -2,8 +2,8 @@ package com.example.restservice.Controllers;
 
 import com.example.restservice.Constants.Constants;
 import com.example.restservice.Representation_Classes.ResponseJson;
-import com.example.restservice.Representation_Classes.Ride;
 import com.example.restservice.database.Database;
+import com.example.restservice.database.Rides;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -159,7 +159,7 @@ public class DriverController {
         if(!database.isDriver(email))
             return new ResponseJson("addRide",false,"Not a valid Driver");
 
-        List<Ride> rides = database.getDriverRides(userID,true);
+        List<Rides> rides = database.getDriverRides(userID,true);
 
         return new ResponseJson("getMyRides",true,"",rides);
 

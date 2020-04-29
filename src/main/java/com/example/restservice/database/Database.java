@@ -1,6 +1,6 @@
 package com.example.restservice.database;
 
-import com.example.restservice.Representation_Classes.Ride;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.context.ApplicationContext;
@@ -335,7 +335,7 @@ public class Database {
 	 * with these rides, regenerate completed entries by pulling info you need
 	 * Return that list
 	 */
-	public List<Ride> getDriverRides(String driverID, boolean isActive){
+	public List<Rides> getDriverRides(String driverID, boolean isActive){
 
 		return null;
 	}
@@ -370,7 +370,7 @@ public class Database {
 	 * (Note: not enough time now, but its recommenced to make this shit parallel with a fork join of the org list because after enough uses that list is gonna be hug)
 	 *
 	 */
-	public List<Ride> getSearchedBusStops(String locationName, String time, String country, String state, String city, String address, String areaCode){
+	public List<Rides> getSearchedBusStops(String locationName, String time, String country, String state, String city, String address, String areaCode){
 
 		return null;
 	}
@@ -488,7 +488,7 @@ public class Database {
 	 * From that list, regenerate all rides buy using the rideID in Passengers.
 	 * return regenerated ride list
 	 */
-	public List<Ride> getMyRides(String riderID, boolean isActive){
+	public List<Rides> getMyRides(String riderID, boolean isActive){
 
 		return null;
 	}

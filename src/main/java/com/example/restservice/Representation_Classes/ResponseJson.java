@@ -1,5 +1,7 @@
 package com.example.restservice.Representation_Classes;
 
+import com.example.restservice.database.Rides;
+
 import java.util.List;
 
 public class ResponseJson {
@@ -9,12 +11,12 @@ public class ResponseJson {
     private String action;
     private boolean success;
     private String result;
-    private List<Ride> rides;
+    private List<Rides> rides;
 
     public ResponseJson(String action, boolean success, String result){
         this.action=action;this.result=result;this.success=success;rides=null;
     }
-    public ResponseJson(String action, boolean success, String result,List<Ride> rides){
+    public ResponseJson(String action, boolean success, String result,List<Rides> rides){
         this.action=action;this.result=result;this.success=success;this.rides=rides;
     }
 
@@ -46,11 +48,11 @@ public class ResponseJson {
         this.success = success;
     }
 
-    public List<Ride> getRide() {
+    public List<Rides> getRide() {
         return rides;
     }
 
-    public void setRide(List<Ride> ride) {
+    public void setRide(List<Rides> ride) {
         this.rides = ride;
     }
 }
