@@ -10,11 +10,9 @@ package com.example.restservice.database;
  */
 public class Passengers {
 
-    String id;
     String riderID;
-    String rideID;
     String startDate;
     String endDate;
-    String pickupLocations;
+    String pickupLocationsID;
 
 }

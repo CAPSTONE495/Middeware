@@ -15,7 +15,6 @@ BusStop Table{//TODO make this table
 public class BusStops {
 
     String id;
-    String rideID;
     String locationName;
     String country;
     String state;
@@ -24,8 +23,16 @@ public class BusStops {
     String areaCode;
     boolean isDestination;
     boolean active;
+    boolean pickupSomeone;
     String time;//represents the time someone is supposed to be there
-    String[] passengerIDs;
+
+    public boolean isPickupSomeone() {
+        return pickupSomeone;
+    }
+
+    public void setPickupSomeone(boolean pickupSomeone) {
+        this.pickupSomeone = pickupSomeone;
+    }
 
     public String getId() {
         return id;
@@ -35,13 +42,6 @@ public class BusStops {
         this.id = id;
     }
 
-    public String getRideID() {
-        return rideID;
-    }
-
-    public void setRideID(String rideID) {
-        this.rideID = rideID;
-    }
 
     public String getLocationName() {
         return locationName;
@@ -115,11 +115,4 @@ public class BusStops {
         this.time = time;
     }
 
-    public String[] getPassengerIDs() {
-        return passengerIDs;
-    }
-
-    public void setPassengerIDs(String[] passengerIDs) {
-        this.passengerIDs = passengerIDs;
-    }
 }
