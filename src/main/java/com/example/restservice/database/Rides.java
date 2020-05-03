@@ -17,15 +17,21 @@ Primary Key: int RideID (cant be null)
 public class Rides {
 
     String id;
-    String driverID;
-    BusStops destinationBusStop;
+    Users driverID;
     String startDate;
-    String EndDate;
-    int completed;
-    int cancelled;
+    String endDate;
+    BusStops destinationBusStop;
     ArrayList<BusStops> pickUpBusStop; //max size 10
-    ArrayList<Passengers> passengers; //max size 15
-    ArrayList<String> queue;
+    ArrayList<Users> passengers; //max size 15
+    
+    public Rides(Users driverID, String startDate, String endDate, ArrayList<BusStops> pickUpBusStop) {
+    	this.driverID = driverID;
+    	this.startDate = startDate;
+    	this.endDate = endDate;
+    	this.pickUpBusStop = pickUpBusStop;
+    	this.passengers = null;
+    	
+    }
 
     public String getId() {
         return id;
@@ -35,11 +41,11 @@ public class Rides {
         this.id = id;
     }
 
-    public String getDriverID() {
+    public Users getDriverID() {
         return driverID;
     }
 
-    public void setDriverID(String driverID) {
+    public void setDriverID(Users driverID) {
         this.driverID = driverID;
     }
 
@@ -52,28 +58,13 @@ public class Rides {
     }
 
     public String getEndDate() {
-        return EndDate;
+        return endDate;
     }
 
     public void setEndDate(String endDate) {
-        EndDate = endDate;
+        this.endDate = endDate;
     }
 
-    public int getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(int completed) {
-        this.completed = completed;
-    }
-
-    public int getCancelled() {
-        return cancelled;
-    }
-
-    public void setCancelled(int cancelled) {
-        this.cancelled = cancelled;
-    }
 
     public BusStops getDestinationBusStop() {
         return destinationBusStop;
@@ -91,19 +82,11 @@ public class Rides {
         this.pickUpBusStop = pickUpBusStop;
     }
 
-    public ArrayList<Passengers> getPassengers() {
+    public ArrayList<Users> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(ArrayList<Passengers> passengers) {
+    public void setPassengers(ArrayList<Users> passengers) {
         this.passengers = passengers;
-    }
-
-    public ArrayList<String> getQueue() {
-        return queue;
-    }
-
-    public void setQueue(ArrayList<String> queue) {
-        this.queue = queue;
     }
 }
