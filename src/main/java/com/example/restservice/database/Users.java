@@ -22,9 +22,10 @@ User Table{
 public class Users {
 	
 	@Id
-	private String id;	
+	private String id;
 	String firstname;
 	String lastname;
+	String pickupID;
 	String grade;
 	String email;
 	boolean driver;
@@ -40,7 +41,7 @@ public class Users {
 		this.firstname = firstname;//TODO you can set first and last name to "" as they will be added at a later time
 		this.lastname = lastname;
 		this.email = email;
-		//TODO I add some initilizers for when a new user is made. Please double check that this is fine.
+		this.pickupID = null;
 		this.driver=false;
 		this.admin=false;
 		this.num_seats = 0;
@@ -76,6 +77,13 @@ public class Users {
 		this.lastname = lname;
 	}
 	
+	public String getPickUp() {
+		return pickupID;
+	}
+	
+	public void setPickUp(String pickupID) {
+		this.pickupID = pickupID;
+	}
 	public String getGrade() {
 		return grade;
 	}
