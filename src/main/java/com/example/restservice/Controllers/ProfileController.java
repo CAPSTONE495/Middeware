@@ -16,22 +16,14 @@ import static com.example.restservice.Controllers.AuthController.checker;
 public class ProfileController {
     @Autowired
     Database database;
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addName",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson addName(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addAccount",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson addAccount(@RequestParam(value = "email", defaultValue = "") String email,
                                 @RequestParam(value = "firstName", defaultValue = "") String fName,
                                 @RequestParam(value = "lastName", defaultValue = "") String lName){
 
-        Object value = checker("addName",apiKey,tokenID,new String[] {fName,lName});
 
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
 
-        database.addName(email,fName,lName);
+        database.addUser(fName,lName,email);
 
         return new ResponseJson("add name",true,"");
     }
@@ -147,17 +139,8 @@ public class ProfileController {
     }
 
     @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAccountInfo",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getAccountInfo(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                @RequestParam(value = "tokenID", defaultValue = "") String tokenID){
-        Object value = checker("getAccountInfo",apiKey,tokenID,new String[] {});
+    public ResponseJson getAccountInfo(@RequestParam(value = "email", defaultValue = "") String email){
 
-        String email;
-
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
 
         return new ResponseJson("getAccountInfo",true,database.getUserInfo(email));
     }

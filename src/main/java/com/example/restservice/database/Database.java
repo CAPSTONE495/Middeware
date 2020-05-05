@@ -24,11 +24,11 @@ public class Database {
 	/*
 	User methods that create or finalize entries---------------------------------------------------------------------------------------------------------------------------------------------
 	 */
-	public boolean addUser(String email) {
+	public boolean addUser(String email,String first,String last) {
 		try {
-			Users user = new Users("first", "last", email);
+			Users user = new Users(first, last, email);
 			mongoOperation.save(user);
-			return false;
+			return true;
 		} catch (Exception e) {
 			throw new RuntimeException("Error with addUser: "+e.getLocalizedMessage());
 		}
@@ -48,10 +48,12 @@ public class Database {
 		try {
 			Query lookup = new Query(Criteria.where("email").is(email));
 			Users person = mongoOperation.findOne(lookup, Users.class);
+			if(person==null)
+				return "no driver found";
 			return person.toString();
 			
 		}catch(Exception e) {
-			throw new RuntimeException("Error with addName: "+e.getLocalizedMessage());
+			throw new RuntimeException("Error with addName: "+e.getLocalizedMessage()+"  "+email);
 		}
 	}
 

@@ -86,11 +86,11 @@ public class DriverController {
             return new ResponseJson("addRide",false,"Not a valid Driver");
 
         //TODO probably will need some check to reverse changes if something breaks halfway through but currently just praying nothing breaks
-        String busStopID = database.addBusStop("",location,timeOfArrival.toString(),country,state,city,street,areaCode,true);
+        //String busStopID = database.addBusStop("",location,timeOfArrival.toString(),country,state,city,street,areaCode,true);
         String userID = database.emailToID(email);
-        String rideID = database.addRide(userID,startTime.toString(),endTime.toString(),busStopID);
+        //String rideID = database.addRide(userID,startTime.toString(),endTime.toString(),busStopID);
 
-        database.linkRideAndBusStop(busStopID,rideID);
+        //database.linkRideAndBusStop(busStopID,rideID);
 
         return new ResponseJson("addRide",true,"");
     }
@@ -133,7 +133,7 @@ public class DriverController {
         if(!database.isDriver(email))
             return new ResponseJson("addRide",false,"Not a valid Driver");
 
-        database.addBusStop(rideID,location,pickUpTime.toString(),country,state,city,street,areaCode,false);
+        //database.addBusStop(rideID,location,pickUpTime.toString(),country,state,city,street,areaCode,false);
 
         return new ResponseJson("addRide",true,"");
     }
@@ -159,9 +159,9 @@ public class DriverController {
         if(!database.isDriver(email))
             return new ResponseJson("addRide",false,"Not a valid Driver");
 
-        List<Rides> rides = database.getDriverRides(userID,true);
+        //List<Rides> rides = database.getDriverRides(userID,true);
 
-        return new ResponseJson("getMyRides",true,"",rides);
+        return null;//new ResponseJson("getMyRides",true,"",rides);
 
     }
 
@@ -212,7 +212,7 @@ public class DriverController {
             return new ResponseJson("addBusStop",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
         }
 
-        String[] lostRiders = database.cancelRide(rideID,pickUpTime.toString());
+        //String[] lostRiders = database.cancelRide(rideID,pickUpTime.toString());
 
         //TODO not enough time but, at some point you need to take the lostRiders and notify the users they lost their ride: probably through email
 

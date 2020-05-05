@@ -47,7 +47,7 @@ public class PassengerController {
             return new ResponseJson("findRides",false,"Failed to convert time interval. Expected: "+Constants.DATEFORMAT);
         }
 
-        return new ResponseJson("findRides",true,"",database.getSearchedBusStops(location,time1.toString(),country,state,city,street,areaCode));
+        return null;//ResponseJson("findRides",true,"",database.getSearchedBusStops(location,time1.toString(),country,state,city,street,areaCode));
     }
 
     @RequestMapping(value= Constants.PathConstants.PASSENGERPATH+"/getMyRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,7 +64,7 @@ public class PassengerController {
 
         String userID = database.emailToID(email);
 
-        return new ResponseJson("addRide",true,"",database.getMyRides(userID,true));
+        return null; //new ResponseJson("addRide",true,"",database.getMyRides(userID,true));
     }
 
     @RequestMapping(value= Constants.PathConstants.PASSENGERPATH+"/addRide",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,7 +94,7 @@ public class PassengerController {
 
         String userID = database.emailToID(email);
 
-        database.addPassenger(userID,start.toString(),end.toString(),busStopID);
+        //database.addPassenger(userID,start.toString(),end.toString(),busStopID);
 
         return new ResponseJson("addRide",true,"");
     }
@@ -112,7 +112,7 @@ public class PassengerController {
 
         String userID = database.emailToID(email);
 
-        database.removePassenger(userID);
+        //database.removePassenger(userID);
         return new ResponseJson("addRide",true,"");
     }
 }

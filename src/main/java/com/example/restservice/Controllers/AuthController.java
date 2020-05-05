@@ -72,7 +72,7 @@ public class AuthController {
 
         Constants.APIKeyMapper.addAPIKey(email,apiKey);
 
-        return new TokenJson(apiKey,database.addUser(email));
+        return null; //new TokenJson(apiKey,database.addUser(email));
     }
 
     private static String getClientID(){
@@ -86,7 +86,7 @@ public class AuthController {
         return clientID;
     }
 
-    private static String generateAPIKey() throws NoSuchAlgorithmException {
+    public String generateAPIKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(256);
         SecretKey secretKey = keyGen.generateKey();
