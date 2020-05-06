@@ -130,7 +130,7 @@ public class DriverController {
         return new ResponseJson("addRide",added,message);
     }
 
-    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/acceptPassenger",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/acceptPassenger",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public Rides acceptPassenger(@RequestParam(value = "rideID", defaultValue = "") String rideID,
                                 @RequestParam(value = "email", defaultValue = "") String email,
                                 @RequestParam(value = "accepted", defaultValue = "") String accpeted){

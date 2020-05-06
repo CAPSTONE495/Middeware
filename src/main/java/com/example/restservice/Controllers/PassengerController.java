@@ -62,7 +62,7 @@ public class PassengerController {
         return new ResponseJson("requestRide",true,"request Sent");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PASSENGERPATH+"/requestRide",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PASSENGERPATH+"/cancelRide",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson cancelRide(@RequestParam(value = "email", defaultValue = "") String email,
                                    @RequestParam(value = "rideID", defaultValue = "") String rideID){
 
@@ -79,6 +79,6 @@ public class PassengerController {
         if(edit)
             database.updateRide(ride);
 
-        return new ResponseJson("requestRide",edit,"");
+        return new ResponseJson("cancelRide",edit,"");
     }
 }

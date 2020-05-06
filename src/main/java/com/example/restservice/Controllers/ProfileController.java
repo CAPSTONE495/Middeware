@@ -107,7 +107,7 @@ public class ProfileController {
         return new ResponseJson("updateSeats",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addRating",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateAboutMe",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateAboutMe(@RequestParam(value = "email", defaultValue = "") String email,
                                        @RequestParam(value = "aboutMe", defaultValue = "") String aboutMe){
 
@@ -116,7 +116,7 @@ public class ProfileController {
         return new ResponseJson("updateSeats",true,aboutMe);
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateAboutMe",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addRating",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson addRating(@RequestParam(value = "email", defaultValue = "") String email,
                                       @RequestParam(value = "rating", defaultValue = "") String rating){
 
@@ -131,7 +131,7 @@ public class ProfileController {
             return new ResponseJson("updateSeats",false,"rating out of range");
 
 
-
+        database.updateRating(email,r);
 
         return new ResponseJson("updateSeats",true,"");
     }
@@ -139,7 +139,7 @@ public class ProfileController {
 
 
     //------------------------all rides stuff------------------------------------
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAllRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= "/getAllRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Rides> getAllRides(){
         List<Rides> rides = database.getDrives(true);
         List<Rides> oldRides = new ArrayList<>();
