@@ -101,6 +101,18 @@ public class Database {
 			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
 		}
 	}
+	//TODO fill in the rest of this method pls, I am not sure how to update more than one var at a time
+	public void updateRating(String email, int rating){
+		try{
+			Query query = new Query(Criteria.where("email").is(email));
+			Users user = mongoOperation.findOne(query,Users.class);
+			user.setRaters(user.getRaters()+1);
+			user.setRatings(user.getRatings()+rating);
+
+		}catch(Exception e){
+			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
+		}
+	}
 	/*
 
 	User Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -160,6 +172,11 @@ public class Database {
 		}
 	}
 
+	public Rides getRide(String rideID){
+		Query query = new Query(Criteria.where("_id").is(rideID));
+		return mongoOperation.findOne(query,Rides.class);
+	}
+
 	/*
 
 	Rides Methods that update ride values---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -176,7 +193,7 @@ public class Database {
 	 *
 	 * @param driver
 	 * @return
-	 */
+	 *
 	public List<Rides> getDriverRides(Users driver){
 		try {
 		Query lookup = new Query(Criteria.where("driverID").is(driver));
@@ -184,7 +201,7 @@ public class Database {
 		}catch(Exception e) {
 			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
 		}
-	}
+	}*/
 
 	/**
 	 * TODO fill in method
@@ -194,15 +211,19 @@ public class Database {
 	 *
 	 */
 	public List<Rides> getDrives(boolean active){
+
 		return null;
 	}
 
+
+
 	/**
 	 * TODO fill in method
-	 * Takes a ride and updates it in database, repeated will all rides in list have been updated in db
-	 * @param ridesForUpdate
+	 * Takes a ride and updates it in database,
+	 * @param ride
 	 */
-	public void updateStatusOfSeveralRides(List<Rides> ridesForUpdate){
+	public void updateRide(Rides ride){
+		Query query = new Query(Criteria.where("_id").is(ride.id));
 
 	}
 
@@ -277,7 +298,8 @@ public class Database {
 	}
 
 
-	public boolean addPassenger(String riderID, Users pass, String pickupID){
+
+	/*public boolean addPassenger(String riderID, Users pass, String pickupID){
 		try {
 			Query ride = new Query(Criteria.where("_id").is(riderID));
 			Rides new_ride = mongoOperation.findOne(ride, Rides.class);
@@ -307,6 +329,6 @@ public class Database {
 			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
 		}
 
-	}
+	}*/
 
 }

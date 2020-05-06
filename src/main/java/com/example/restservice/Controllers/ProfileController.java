@@ -1,6 +1,7 @@
 package com.example.restservice.Controllers;
 
 import com.example.restservice.Constants.Constants;
+import com.example.restservice.Controllers.Support.ComparatorRide;
 import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.database.Database;
 import com.example.restservice.database.Rides;
@@ -15,11 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import static com.example.restservice.Controllers.AuthController.checker;
+import java.util.*;
 
 @RestController
 public class ProfileController {
@@ -110,7 +107,7 @@ public class ProfileController {
         return new ResponseJson("updateSeats",true,"");
     }
 
-    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateAboutMe",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/addRating",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseJson updateAboutMe(@RequestParam(value = "email", defaultValue = "") String email,
                                        @RequestParam(value = "aboutMe", defaultValue = "") String aboutMe){
 
@@ -119,10 +116,32 @@ public class ProfileController {
         return new ResponseJson("updateSeats",true,aboutMe);
     }
 
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateAboutMe",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson addRating(@RequestParam(value = "email", defaultValue = "") String email,
+                                      @RequestParam(value = "rating", defaultValue = "") String rating){
+
+        int r;
+        try{
+            r = Integer.parseInt(rating);
+        }catch(Exception e){
+            return new ResponseJson("updateSeats",false,"Failed because seat value is not numeric");
+        }
+
+        if(r<0||5<r)
+            return new ResponseJson("updateSeats",false,"rating out of range");
+
+
+
+
+        return new ResponseJson("updateSeats",true,"");
+    }
+
+
+
     //------------------------all rides stuff------------------------------------
     @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAllRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Rides> getAllRides(){
-        List<Rides> rides = database.getAllActiveDrives();
+        List<Rides> rides = database.getDrives(true);
         List<Rides> oldRides = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
         for(Iterator<Rides> iterator = rides.iterator();iterator.hasNext();){
@@ -138,12 +157,18 @@ public class ProfileController {
                 //TODO when status var is added, change status
                 iterator.remove();
                 oldRides.add(ride);
+                continue;
+            }
+            if(ride.getDriverID().getSeats()>=ride.getPassengers().size()){
+                iterator.remove();
             }
         }
-        database.updateStatusOfSeveralRides(oldRides);
+        for(Rides ride:oldRides){
+            database.updateRide(ride);
+        }//you can throw this in its own thread so the user just gets their shit
+        Collections.sort(rides,new ComparatorRide());
         return rides;
     }
-
 
 
 

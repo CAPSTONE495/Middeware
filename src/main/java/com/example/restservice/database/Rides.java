@@ -21,6 +21,7 @@ public class Rides {
     Users driverID;
     String startDate;
     String endDate;
+    boolean active;
     BusStops destinationBusStop;
     List<BusStops> pickUpBusStop; //max size 10
     List<Users> passengers; //max size 15
@@ -31,8 +32,8 @@ public class Rides {
     	this.endDate = null;
     	this.destinationBusStop=destinationBusStop;
     	this.pickUpBusStop = pickUpBusStop;
-    	this.passengers = null;
-    	
+    	this.passengers = new ArrayList<>();
+    	this.active = true;
     }
 
     public String getId() {

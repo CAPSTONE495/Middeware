@@ -1,13 +1,13 @@
 package com.example.restservice.Controllers;
 
 import com.example.restservice.Constants.Constants;
+import com.example.restservice.Controllers.Support.ComparatorRide;
 import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.database.BusStops;
 import com.example.restservice.database.Database;
 import com.example.restservice.database.Rides;
 import com.example.restservice.database.Users;
 import org.joda.time.DateTime;
-import org.joda.time.Weeks;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-import static com.example.restservice.Controllers.AuthController.checker;
+
 
 /*
 TODO fill in the blanks, im not sure how to handle dateTime or arrays for mongodb.
@@ -77,7 +79,7 @@ public class DriverController {
 
         DateTime timeOfArrival;
         try{
-            timeOfArrival = formatter.parseDateTime(time);
+            timeOfArrival = new DateTime(formatter.parseDateTime(time).getMillis());
 
         }catch(Exception e){
             return new ResponseJson("addRide",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
@@ -128,19 +130,50 @@ public class DriverController {
         return new ResponseJson("addRide",added,message);
     }
 
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/acceptPassenger",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public Rides acceptPassenger(@RequestParam(value = "rideID", defaultValue = "") String rideID,
+                                @RequestParam(value = "email", defaultValue = "") String email,
+                                @RequestParam(value = "accepted", defaultValue = "") String accpeted){
+        Rides ride = database.getRide(rideID);
+        boolean accept;
+        boolean edit = false;
+        try{
+            accept = Boolean.parseBoolean(accpeted);
+        }catch(Exception e){
+            throw new RuntimeException("failed to parse accepted");
+        }
+        for(Iterator<Users> iterator = ride.getPassengers().iterator();iterator.hasNext();){
+            Users user = iterator.next();
+            if(!user.getEmail().equals(email)) {
+                continue;
+            }else if(accept){
+                user.setStatus("Accepted");
+            }else{
+                iterator.remove();
+            }
+            edit = true;
+            break;
+        }
+
+        if(edit)
+            database.updateRide(ride);
+
+        return ride;
+    }
+
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/getMyDrives",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getMyDrives(@RequestParam(value = "email", defaultValue = "") String email){
+    public List<Rides> getMyDrives(@RequestParam(value = "email", defaultValue = "") String email){
 
-        Users user = database.getUserInfo(email);
+        List<Rides> rides = database.getDrives(true);
+        for(Iterator<Rides> iterator = rides.iterator();iterator.hasNext();){
+            if(!iterator.next().getDriverID().getEmail().equals(email)){
+                iterator.remove();
+            }
+        }
 
-        if(user==null)
-            return new ResponseJson("addRide",false,"unable to find user");
-
-        List<Rides> rides = database.getDriverRides(user);
-
-
-        return new ResponseJson("getMyRides",true,"",rides);
+        Collections.sort(rides,new ComparatorRide());
+        return rides;
 
     }
 

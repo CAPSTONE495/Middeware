@@ -35,13 +35,14 @@ public class Users {
 	int num_seats;
 	int rides_taken;
 	int passenger_taken;
-	double rating;
+	int ratings;
+	int raters;
 	double distance_traveled;
 	double total_time;//this value represents the time for all the rides
 	
 	public Users(String firstname,String lastname, String email) {
 		super();
-		this.firstname = firstname;//TODO you can set first and last name to "" as they will be added at a later time
+		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
 		this.pickupID = null;
@@ -50,6 +51,8 @@ public class Users {
 		this.status = null;
 		this.driver=false;
 		this.admin=false;
+		ratings = 0;
+		raters = 0;
 		this.num_seats = 0;
 		this.rides_taken = 0;
 		this.passenger_taken = 0;
@@ -161,15 +164,23 @@ public class Users {
 	public void setPassengerTaken(int passenger) {
 		passenger_taken = passenger;
 	}
-	
-	public double getRating(){
-		return rating;
+
+	public int getRatings() {
+		return ratings;
 	}
-	
-	public void setRating(double rating){
-		this.rating = rating;
+
+	public void setRatings(int ratings) {
+		this.ratings = ratings;
 	}
-	
+
+	public int getRaters() {
+		return raters;
+	}
+
+	public void setRaters(int raters) {
+		this.raters = raters;
+	}
+
 	public double getDistanceTraveled() {
 		return distance_traveled;
 	}
