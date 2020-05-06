@@ -1,6 +1,7 @@
 package com.example.restservice.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /*
 TODO fill in the blanks, im not sure how to handle dateTime or arrays for mongodb.
@@ -21,8 +22,8 @@ public class Rides {
     String startDate;
     String endDate;
     BusStops destinationBusStop;
-    ArrayList<BusStops> pickUpBusStop; //max size 10
-    ArrayList<Users> passengers; //max size 15
+    List<BusStops> pickUpBusStop; //max size 10
+    List<Users> passengers; //max size 15
     
     public Rides(Users driverID, String startDate, BusStops destinationBusStop, ArrayList<BusStops> pickUpBusStop) {
     	this.driverID = driverID;
@@ -75,7 +76,7 @@ public class Rides {
         this.destinationBusStop = destinationBusStop;
     }
 
-    public ArrayList<BusStops> getPickUpBusStop() {
+    public List<BusStops> getPickUpBusStop() {
         return pickUpBusStop;
     }
 
@@ -83,7 +84,7 @@ public class Rides {
         this.pickUpBusStop = pickUpBusStop;
     }
 
-    public ArrayList<Users> getPassengers() {
+    public List<Users> getPassengers() {
         return passengers;
     }
 

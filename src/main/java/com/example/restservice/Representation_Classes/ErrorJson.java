@@ -16,6 +16,8 @@ public class ErrorJson {
         this.timeStamp = (String) errorAttributes.get("timeStamp");
         this.trace = (String) errorAttributes.get("trace");
     }
+    private String getType() {return type;}
+
     public Integer getStatus(){
         return status;
     }
@@ -35,5 +37,7 @@ public class ErrorJson {
     public String getTrace(){
         return trace;
     }
+
+
 
 }

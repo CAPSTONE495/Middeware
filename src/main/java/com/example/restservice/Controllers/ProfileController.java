@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.restservice.Controllers.AuthController.checker;
 
@@ -30,12 +31,11 @@ public class ProfileController {
     }
 
     @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAccountInfo",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getAccountInfo(@RequestParam(value = "email", defaultValue = "") String email){
+    public Users getAccountInfo(@RequestParam(value = "email", defaultValue = "") String email){
         Users u = database.getUserInfo(email);
         if(u==null)
-            new ResponseJson("getAccountInfo",false,"unable to find user");
-        ArrayList<Users> user = new ArrayList<Users>();
-        return new ResponseJson("getAccountInfo",true,u.toString());
+            throw new RuntimeException("unable to find user");
+        return u;
     }
 
     @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateGrade",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
