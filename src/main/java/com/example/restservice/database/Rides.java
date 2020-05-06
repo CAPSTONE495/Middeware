@@ -80,7 +80,7 @@ public class Rides {
         return pickUpBusStop;
     }
 
-    public void setPickUpBusStop(ArrayList<BusStops> pickUpBusStop) {
+    public void setPickUpBusStop(List<BusStops> pickUpBusStop) {
         this.pickUpBusStop = pickUpBusStop;
     }
 
@@ -88,7 +88,7 @@ public class Rides {
         return passengers;
     }
 
-    public void setPassengers(ArrayList<Users> passengers) {
+    public void setPassengers(List<Users> passengers) {
         this.passengers = passengers;
     }
 }

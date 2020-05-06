@@ -12,18 +12,11 @@ public class ResponseJson {
     private String action;
     private boolean success;
     private String result;
-    private List<Rides> rides;
-    private Users user;
 
     public ResponseJson(String action, boolean success, String result){
-        this.action=action;this.result=result;this.success=success;rides=null;
+        this.action=action;this.result=result;this.success=success;
     }
-    public ResponseJson(String action, boolean success, String result,List<Rides> rides){
-        this.action=action;this.result=result;this.success=success;this.rides=rides;
-    }
-    public ResponseJson(Users u){
-        user=u;
-    }
+
     public String getType() { return type; }
 
     public void setType(String type) {this.type = type; }
@@ -52,11 +45,5 @@ public class ResponseJson {
         this.success = success;
     }
 
-    public List<Rides> getRide() {
-        return rides;
-    }
 
-    public void setRide(List<Rides> ride) {
-        this.rides = ride;
-    }
 }

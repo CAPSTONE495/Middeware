@@ -3,7 +3,11 @@ package com.example.restservice.Controllers;
 import com.example.restservice.Constants.Constants;
 import com.example.restservice.Representation_Classes.ResponseJson;
 import com.example.restservice.database.Database;
+import com.example.restservice.database.Rides;
 import com.example.restservice.database.Users;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.example.restservice.Controllers.AuthController.checker;
@@ -103,6 +108,40 @@ public class ProfileController {
         database.updateSeats(email,openSeats);
 
         return new ResponseJson("updateSeats",true,"");
+    }
+
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/updateAboutMe",method = RequestMethod.PUT,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson updateAboutMe(@RequestParam(value = "email", defaultValue = "") String email,
+                                       @RequestParam(value = "aboutMe", defaultValue = "") String aboutMe){
+
+        database.updateAboutMe(email,aboutMe);
+
+        return new ResponseJson("updateSeats",true,aboutMe);
+    }
+
+    //------------------------all rides stuff------------------------------------
+    @RequestMapping(value= Constants.PathConstants.PROFILEPATH+"/getAllRides",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Rides> getAllRides(){
+        List<Rides> rides = database.getAllActiveDrives();
+        List<Rides> oldRides = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
+        for(Iterator<Rides> iterator = rides.iterator();iterator.hasNext();){
+            Rides ride = iterator.next();
+            DateTime time;
+            try{
+                time = new DateTime(formatter.parseDateTime(ride.getStartDate()).getMillis());
+            }catch(Exception e){
+                String message = "failed to parse time: "+"";
+                throw new RuntimeException("failed to parse time: "+ride.getStartDate());
+            }
+            if(time.isBeforeNow()){
+                //TODO when status var is added, change status
+                iterator.remove();
+                oldRides.add(ride);
+            }
+        }
+        database.updateStatusOfSeveralRides(oldRides);
+        return rides;
     }
 
 

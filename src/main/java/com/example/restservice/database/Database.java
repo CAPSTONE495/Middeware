@@ -93,6 +93,14 @@ public class Database {
 			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
 		}
 	}
+	public void updateAboutMe(String email,String aboutMe){
+		try{
+			Query query = new Query(Criteria.where("email").is(email));
+			mongoOperation.updateFirst(query,Update.update("aboutMe",aboutMe),Users.class);
+		}catch(Exception e){
+			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
+		}
+	}
 	/*
 
 	User Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -163,6 +171,12 @@ public class Database {
 	Rides Methods that pull values---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
+
+	/**
+	 *
+	 * @param driver
+	 * @return
+	 */
 	public List<Rides> getDriverRides(Users driver){
 		try {
 		Query lookup = new Query(Criteria.where("driverID").is(driver));
@@ -173,10 +187,29 @@ public class Database {
 	}
 
 	/**
+	 * TODO fill in method
+	 * just pulls every ride whose active status matches that
+	 * MIDDLEWARE NOTE: there is a chance that some rides have expired since last transactions, must check every instance then update them
+	 * @return
+	 *
+	 */
+	public List<Rides> getDrives(boolean active){
+		return null;
+	}
+
+	/**
+	 * TODO fill in method
+	 * Takes a ride and updates it in database, repeated will all rides in list have been updated in db
+	 * @param ridesForUpdate
+	 */
+	public void updateStatusOfSeveralRides(List<Rides> ridesForUpdate){
+
+	}
+
+	/**
 	 *
 	 * @param rideID
 	 * @return
-	 * TODO fill in method
 	 * Search for ride with matching ride id
 	 * return the length of pickupBusStopIDs
 	 */
@@ -190,27 +223,7 @@ public class Database {
 			}
 	}
 
-	/**
-	 * TODO fill in method
-	 * @param locationName
-	 * @param time
-	 * @param country
-	 * @param state
-	 * @param city
-	 * @param address
-	 * @param areaCode
-	 * @return
-	 *
-	 * Go through all busStops, pull everyone that matches the criteria (you can make the time in a range of +-15 min from whatever time is given)
-	 * Go through that list and remove any busStops that are not linked to an active Ride or if ride endTime is past Current Time.
-	 * Go through that list and check if there is an open seat for the user.
-	 * (Note: not enough time now, but its recommenced to make this shit parallel with a fork join of the org list because after enough uses that list is gonna be hug)
-	 *
-	 **/
-	public List<Rides> getSearchedBusStops(String locationName, String time, String country, String state, String city, String address, String areaCode){
 
-		return null;
-	}
 
 	/*
 
@@ -222,7 +235,6 @@ public class Database {
 	 *
 	 *
 	 * @return
-	 * /TODO fill in method pls
 	 * make a busStop entry and then return its id,
 	 *
 	 * */
@@ -232,7 +244,7 @@ public class Database {
 			Rides ride = mongoOperation.findOne(queryRide, Rides.class);
 			if(ride==null)
 				return false;
-			ArrayList<BusStops> s = ride.getPickUpBusStop();
+			List<BusStops> s = ride.getPickUpBusStop();
 			s.add(busStop);
 			mongoOperation.updateFirst(queryRide,Update.update("pickUpBusStop",s),Rides.class);
 			return true;
@@ -247,7 +259,7 @@ public class Database {
 			Rides ride = mongoOperation.findOne(query,Rides.class);
 			if(ride==null)
 				return false;
-			ArrayList<BusStops> busStops = ride.getPickUpBusStop();
+			List<BusStops> busStops = ride.getPickUpBusStop();
 			boolean val = false;
 			for(Iterator<BusStops> i = busStops.iterator();i.hasNext();){
 				if(i.next().getId().equals(busStopID)){
@@ -269,7 +281,7 @@ public class Database {
 		try {
 			Query ride = new Query(Criteria.where("_id").is(riderID));
 			Rides new_ride = mongoOperation.findOne(ride, Rides.class);
-			ArrayList<Users> passengers = new_ride.getPassengers();
+			List<Users> passengers = new_ride.getPassengers();
 			passengers.add(pass);
 			pass.setPickUp(pickupID);
 			mongoOperation.save(new_ride);
@@ -285,7 +297,7 @@ public class Database {
 		try {
 		Query ride = new Query(Criteria.where("_id").is(riderID));
 		Rides new_ride = mongoOperation.findOne(ride, Rides.class);
-		ArrayList<Users> passengers = new_ride.getPassengers();
+		List<Users> passengers = new_ride.getPassengers();
 		passengers.remove(pass);
 		new_ride.setPassengers(passengers);
 		pass.setPickUp(pickupID);

@@ -35,7 +35,7 @@ public class Users {
 	int num_seats;
 	int rides_taken;
 	int passenger_taken;
-	double rating
+	double rating;
 	double distance_traveled;
 	double total_time;//this value represents the time for all the rides
 	
