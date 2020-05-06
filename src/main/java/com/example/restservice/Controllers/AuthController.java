@@ -86,7 +86,7 @@ public class AuthController {
         return clientID;
     }
 
-    public String generateAPIKey() throws NoSuchAlgorithmException {
+    public static String generateAPIKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("AES");
         keyGen.init(256);
         SecretKey secretKey = keyGen.generateKey();

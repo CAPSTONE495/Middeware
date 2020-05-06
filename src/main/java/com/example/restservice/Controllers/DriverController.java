@@ -2,9 +2,12 @@ package com.example.restservice.Controllers;
 
 import com.example.restservice.Constants.Constants;
 import com.example.restservice.Representation_Classes.ResponseJson;
+import com.example.restservice.database.BusStops;
 import com.example.restservice.database.Database;
 import com.example.restservice.database.Rides;
+import com.example.restservice.database.Users;
 import org.joda.time.DateTime;
+import org.joda.time.Weeks;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.restservice.Controllers.AuthController.checker;
@@ -48,176 +53,117 @@ public class DriverController {
     Database database;
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/addRide",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson addRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                @RequestParam(value = "startDate", defaultValue = "") String start,
-                                @RequestParam(value = "endDate", defaultValue = "") String end,
+    public ResponseJson addRide(@RequestParam(value = "email", defaultValue = "") String userEmail,
                                 @RequestParam(value = "locationName", defaultValue = "") String location,
                                 @RequestParam(value = "timeOfArrival", defaultValue = "") String time,
                                 @RequestParam(value = "country", defaultValue = "") String country,
                                 @RequestParam(value = "state", defaultValue = "") String state,
                                 @RequestParam(value = "city", defaultValue = "") String city,
                                 @RequestParam(value = "street", defaultValue = "") String street,
-                                @RequestParam(value = "areaCode", defaultValue = "") String areaCode){
-        Object value = checker("addRide",apiKey,tokenID,new String[] {start,end,country,state,time,city,street,areaCode});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
+                                @RequestParam(value = "areaCode", defaultValue = "") String areaCode,
+                                @RequestParam(value = "repeat", defaultValue = "") String repeated){
 
+        int repeat;
+        repeat = Integer.parseInt(repeated);
+        if(repeat<0||52<repeat)
+            return new ResponseJson("addRide",false,"Invalid number for repeated");
         DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
-        DateTime startTime;
-        DateTime endTime;
+
+
+        Users user = database.getUserInfo(userEmail);
+        BusStops des = new BusStops("0",location,country,state,city,street,areaCode,true);
+        if(user==null)
+            return new ResponseJson("addRide",false,"failed to pull userID");
+
         DateTime timeOfArrival;
         try{
-            startTime = formatter.parseDateTime(start);
-            endTime = formatter.parseDateTime(end);
             timeOfArrival = formatter.parseDateTime(time);
+
         }catch(Exception e){
             return new ResponseJson("addRide",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
         }
-        if(!(startTime.isAfterNow()&&startTime.isBefore(endTime))){
+        if(timeOfArrival.isAfterNow()){
             return new ResponseJson("addRide",false,"invalid time");
         }
+        database.addRide(user, timeOfArrival.toString(), des, new ArrayList<BusStops>());
 
-        if(!database.isDriver(email))
-            return new ResponseJson("addRide",false,"Not a valid Driver");
+        for(int i=0;i<repeat;i++) {
+            timeOfArrival = timeOfArrival.plusWeeks(1);
+            database.addRide(user,timeOfArrival.toString(),des,new ArrayList<BusStops>());
+        }
 
-        //TODO probably will need some check to reverse changes if something breaks halfway through but currently just praying nothing breaks
-        //String busStopID = database.addBusStop("",location,timeOfArrival.toString(),country,state,city,street,areaCode,true);
-        String userID = database.emailToID(email);
-        //String rideID = database.addRide(userID,startTime.toString(),endTime.toString(),busStopID);
 
-        //database.linkRideAndBusStop(busStopID,rideID);
+
+
 
         return new ResponseJson("addRide",true,"");
     }
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/addBusStop",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson addBusStop(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                   @RequestParam(value = "rideID", defaultValue = "") String rideID,
+    public ResponseJson addBusStop(@RequestParam(value = "rideID", defaultValue = "") String rideID,
                                    @RequestParam(value = "locationName", defaultValue = "") String location,
-                                   @RequestParam(value = "pickUpTime", defaultValue = "") String time,
                                    @RequestParam(value = "country", defaultValue = "") String country,
                                    @RequestParam(value = "state", defaultValue = "") String state,
                                    @RequestParam(value = "city", defaultValue = "") String city,
                                    @RequestParam(value = "street", defaultValue = "") String street,
                                    @RequestParam(value = "areaCode", defaultValue = "") String areaCode){
 
-        Object value = checker("addBusStop",apiKey,tokenID,new String[] {rideID,time,country,state,city,street,areaCode});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
-        DateTime pickUpTime;
-        try{
-            pickUpTime = formatter.parseDateTime(time);
-        }catch (Exception e){
-            return new ResponseJson("addBusStop",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
-        }
-
-        String userID = database.emailToID(email);
-        if(userID==null)
-            return  new ResponseJson("addBusStop",false,"couldn't find userID");
-
-        if(database.numOfActivePickUps(rideID)<Constants.MAXBUSSTOPS)
+        if(database.numOfActivePickUps(rideID)>=Constants.MAXBUSSTOPS)
             return new ResponseJson("addBusStop",false,"Reached max amount of pickups");
 
-        if(!database.isDriver(email))
-            return new ResponseJson("addRide",false,"Not a valid Driver");
+        BusStops des;
+        try {
+            des = new BusStops(AuthController.generateAPIKey(),location,country,state,city,street,areaCode,false);
+        } catch (NoSuchAlgorithmException e) {
+            return new ResponseJson("addRide",false,"failed to generate location id");
+        }
 
-        //database.addBusStop(rideID,location,pickUpTime.toString(),country,state,city,street,areaCode,false);
+        boolean added = database.addBusStop(rideID,des);
+        String message = "";
+        if(!added){
+            message = "could not find ride entry";
+        }
 
-        return new ResponseJson("addRide",true,"");
+        return new ResponseJson("addRide",added,message);
     }
 
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/getMyDrives",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getMyDrives(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID){
+    public ResponseJson getMyDrives(@RequestParam(value = "email", defaultValue = "") String email){
 
-        Object value = checker("getMyRides",apiKey,tokenID,new String[] {});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
+        Users user = database.getUserInfo(email);
 
-        String userID = database.emailToID(email);
+        if(user==null)
+            return new ResponseJson("addRide",false,"unable to find user");
 
-        if(userID==null)
-            return new ResponseJson("getMyRides",false,"Failed to find userID");
+        List<Rides> rides = database.getDriverRides(user);
 
-        if(!database.isDriver(email))
-            return new ResponseJson("addRide",false,"Not a valid Driver");
 
-        //List<Rides> rides = database.getDriverRides(userID,true);
-
-        return null;//new ResponseJson("getMyRides",true,"",rides);
+        return new ResponseJson("getMyRides",true,"",rides);
 
     }
 
 
     @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/deleteRide",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson deleteRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                   @RequestParam(value = "rideID", defaultValue = "") String rideID){
-        Object value = checker("getMyRides",apiKey,tokenID,new String[] {rideID});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
-
-        if(!database.isDriver(email))
-            return new ResponseJson("addRide",false,"Not a valid Driver");
+    public ResponseJson deleteRide(@RequestParam(value = "rideID", defaultValue = "") String rideID){
 
         database.deleteRide(rideID);
 
-        //TODO not enough time but, at some point you need to take the lostRiders and notify the users they lost their ride: probably through email
-
-        return new ResponseJson("getMyRides",true,"");
+        return new ResponseJson("deleteRide",true,"deleted "+rideID);
     }
 
-    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/cancelRide",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson cancelRide(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                   @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                   @RequestParam(value = "rideID", defaultValue = "") String rideID,
-                                   @RequestParam(value = "time", defaultValue = "") String time){
-        Object value = checker("getMyRides",apiKey,tokenID,new String[] {rideID});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
+    @RequestMapping(value= Constants.PathConstants.DRIVERPATH+"/deleteBusStop",method = RequestMethod.DELETE,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseJson deleteBusStop(@RequestParam(value = "rideID", defaultValue = "") String rideID,
+                                      @RequestParam(value = "busStopID", defaultValue = "") String busStopID){
 
-        if(!database.isDriver(email))
-            return new ResponseJson("addRide",false,"Not a valid Driver");
-
-        DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
-        DateTime pickUpTime;
-        try{
-            pickUpTime = formatter.parseDateTime(time);
-        }catch (Exception e){
-            return new ResponseJson("addBusStop",false,"invalid time format: needs to be "+Constants.DATEFORMAT);
-        }
-
-        //String[] lostRiders = database.cancelRide(rideID,pickUpTime.toString());
-
-        //TODO not enough time but, at some point you need to take the lostRiders and notify the users they lost their ride: probably through email
-
-        return new ResponseJson("getMyRides",true,"");
+        boolean val = database.deleteBusStop(rideID,busStopID);
+        String message = "deleted "+rideID;
+        if(!val)
+            message = "couldn't find ride or busStop";
+        return new ResponseJson("deleteRide",val,message);
     }
+
 
 
 

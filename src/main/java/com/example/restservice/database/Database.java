@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 @Service
 public class Database {
@@ -24,7 +25,7 @@ public class Database {
 	/*
 	User methods that create or finalize entries---------------------------------------------------------------------------------------------------------------------------------------------
 	 */
-	public boolean addUser(String email,String first,String last) {
+	public boolean addUser(String first,String last,String email) {
 		try {
 			Users user = new Users(first, last, email);
 			mongoOperation.save(user);
@@ -34,7 +35,7 @@ public class Database {
 		}
 	}
 
-	public boolean addName(String email, String firstName, String lastName) {
+	/*public boolean addName(String email, String firstName, String lastName) {
 		Query lookup = new Query(Criteria.where("email").is(email));
 		try {
 			mongoOperation.updateFirst(lookup, Update.update("firstname", firstName), Users.class);
@@ -43,14 +44,12 @@ public class Database {
 		} catch (Exception e) {
 			throw new RuntimeException("Error with addName: "+e.getLocalizedMessage());
 		}
-	}
-	public String getUserInfo(String email){
+	}*/
+	public Users getUserInfo(String email){
 		try {
 			Query lookup = new Query(Criteria.where("email").is(email));
 			Users person = mongoOperation.findOne(lookup, Users.class);
-			if(person==null)
-				return "no driver found";
-			return person.toString();
+			return person;
 			
 		}catch(Exception e) {
 			throw new RuntimeException("Error with addName: "+e.getLocalizedMessage()+"  "+email);
@@ -135,9 +134,9 @@ public class Database {
 	Rides Methods that create or delete rides---------------------------------------------------------------------------------------------------------------------------------------------------
 
 	 */
-	public String addRide(Users driverID, String startDate,String endDate, ArrayList<BusStops> destination){
+	public String addRide(Users driverID, String startDate,BusStops des, ArrayList<BusStops> destination){
 		try {
-		Rides ride = new Rides(driverID, startDate, endDate, destination);
+		Rides ride = new Rides(driverID, startDate, des, destination);
 		mongoOperation.save(ride);
 		return ride.getId();
 		}catch(Exception e){
@@ -147,12 +146,6 @@ public class Database {
 	public void deleteRide(String rideID){
 		try {
 			Query lookup = new Query(Criteria.where("_id").is(rideID));
-			Rides ride = mongoOperation.findOne(lookup, Rides.class);
-			ArrayList<Users> passengers = ride.getPassengers();
-			for(Users user : passengers) {
-				Query person = new Query(Criteria.where("_id").is(user.getId()));
-				mongoOperation.updateFirst(person,Update.update("pickupID", null), Rides.class);
-			}
 			mongoOperation.findAndRemove(lookup, Rides.class);
 		}catch(Exception e){
 			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
@@ -213,12 +206,12 @@ public class Database {
 	 * Go through that list and check if there is an open seat for the user.
 	 * (Note: not enough time now, but its recommenced to make this shit parallel with a fork join of the org list because after enough uses that list is gonna be hug)
 	 *
-	 
+	 **/
 	public List<Rides> getSearchedBusStops(String locationName, String time, String country, String state, String city, String address, String areaCode){
 
 		return null;
 	}
-*/
+
 	/*
 
 	BusStops Methods that create BusStops---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -227,22 +220,50 @@ public class Database {
 
 	/**
 	 *
-	 * @param location
-	 * @param country
-	 * @param state
-	 * @param city
-	 * @param street
-	 * @param areaCode
-	 * @param isDestination
+	 *
 	 * @return
 	 * /TODO fill in method pls
 	 * make a busStop entry and then return its id,
 	 *
-	public String addBusStop(String rideID,String location,String time,String country,String state,String city,String street,String areaCode,boolean isDestination){
-
-		return null;
+	 * */
+	public boolean addBusStop(String rideID,BusStops busStop){
+		try {
+			Query queryRide = new Query(Criteria.where("_id").is(rideID));
+			Rides ride = mongoOperation.findOne(queryRide, Rides.class);
+			if(ride==null)
+				return false;
+			ArrayList<BusStops> s = ride.getPickUpBusStop();
+			s.add(busStop);
+			mongoOperation.updateFirst(queryRide,Update.update("pickUpBusStop",s),Rides.class);
+			return true;
+		}catch(Exception e){
+			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
+		}
 	}
-	*/
+
+	public boolean deleteBusStop(String rideID,String busStopID){
+		try{
+			Query query = new Query(Criteria.where("_id").is(rideID));
+			Rides ride = mongoOperation.findOne(query,Rides.class);
+			if(ride==null)
+				return false;
+			ArrayList<BusStops> busStops = ride.getPickUpBusStop();
+			boolean val = false;
+			for(Iterator<BusStops> i = busStops.iterator();i.hasNext();){
+				if(i.next().getId().equals(busStopID)){
+					i.remove();
+					val = true;
+					break;
+				}
+			}
+			if(val)
+				mongoOperation.updateFirst(query,Update.update("pickUpBusStop",busStops),Rides.class);
+			return val;
+		}catch(Exception e){
+			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
+		}
+	}
+
 
 	public boolean addPassenger(String riderID, Users pass, String pickupID){
 		try {
@@ -258,7 +279,7 @@ public class Database {
 			throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
 		}
 
-		return false;
+		return true;
 	}
 	public void removePassenger(String riderID, Users pass, String pickupID){
 		try {

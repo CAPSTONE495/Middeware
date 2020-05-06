@@ -24,10 +24,11 @@ public class Rides {
     ArrayList<BusStops> pickUpBusStop; //max size 10
     ArrayList<Users> passengers; //max size 15
     
-    public Rides(Users driverID, String startDate, String endDate, ArrayList<BusStops> pickUpBusStop) {
+    public Rides(Users driverID, String startDate, BusStops destinationBusStop, ArrayList<BusStops> pickUpBusStop) {
     	this.driverID = driverID;
     	this.startDate = startDate;
-    	this.endDate = endDate;
+    	this.endDate = null;
+    	this.destinationBusStop=destinationBusStop;
     	this.pickUpBusStop = pickUpBusStop;
     	this.passengers = null;
     	

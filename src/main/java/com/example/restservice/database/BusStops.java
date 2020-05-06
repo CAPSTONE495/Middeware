@@ -26,6 +26,17 @@ public class BusStops {
     boolean pickupSomeone;
     String time;//represents the time someone is supposed to be there
 
+    public BusStops(String id, String locationName, String country, String state, String city, String street, String areaCode, boolean isDestination) {
+        this.id = id;
+        this.locationName = locationName;
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.street = street;
+        this.areaCode = areaCode;
+        this.isDestination = isDestination;
+    }
+
     public boolean isPickupSomeone() {
         return pickupSomeone;
     }

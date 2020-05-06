@@ -22,22 +22,14 @@ public class PassengerController {
     Database database;
 
     @RequestMapping(value= Constants.PathConstants.PASSENGERPATH+"/findPickups",method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseJson getRelatedBusStops(@RequestParam(value = "apiKey", defaultValue = "") String apiKey,
-                                           @RequestParam(value = "tokenID", defaultValue = "") String tokenID,
-                                           @RequestParam(value = "locationName", defaultValue = "") String location,
+    public ResponseJson getRelatedBusStops(@RequestParam(value = "locationName", defaultValue = "") String location,
                                            @RequestParam(value = "timeOfArrival", defaultValue = "") String time,
                                            @RequestParam(value = "country", defaultValue = "") String country,
                                            @RequestParam(value = "state", defaultValue = "") String state,
                                            @RequestParam(value = "city", defaultValue = "") String city,
                                            @RequestParam(value = "street", defaultValue = "") String street,
                                            @RequestParam(value = "areaCode", defaultValue = "") String areaCode){
-        Object value = checker("addRide",apiKey,tokenID,new String[] {location,country,state,time,city,street,areaCode});
-        String email;
-        if(value instanceof String){
-            email = (String) value;
-        }else{
-            return (ResponseJson) value;
-        }
+
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern(Constants.DATEFORMAT);
         DateTime time1;
