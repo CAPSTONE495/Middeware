@@ -212,13 +212,10 @@ public class Database {
 	 */
 	public List<Rides> getDrives(boolean active){
 		Query query = new Query(Criteria.where("active").is(active));
-		List<Rides> list_rides = mongoOperations.find(query,Rides.class);
+		List<Rides> list_rides = mongoOperation.find(query,Rides.class);
 		return list_rides;
 		}
-	catch(Exception e) {
-				throw new RuntimeException("Failed to change driver status: "+e.getLocalizedMessage());
-			}
-	}
+
 
 
 
