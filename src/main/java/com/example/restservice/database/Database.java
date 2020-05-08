@@ -108,6 +108,8 @@ public class Database {
 			Users user = mongoOperation.findOne(query,Users.class);
 			user.setRaters(user.getRaters()+1);
 			user.setRatings(user.getRatings()+rating);
+			mongoOperation.findAndReplace(query, user);
+			
 
 		}catch(Exception e){
 			throw new RuntimeException("Failed to update seats: "+e.getLocalizedMessage());
