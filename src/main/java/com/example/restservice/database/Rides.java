@@ -15,8 +15,9 @@ Primary Key: int RideID (cant be null)
  * int PickupBusStopID (repeat for 10 columns) (linked to values in BusStop Table)
  * int PassengerID (linked to values in BusStop Table)] (repeat for 15 columns)
  */
+@Document(collection = "Rides")
 public class Rides {
-
+    @Id
     String id;
     Users driverID;
     String startDate;
