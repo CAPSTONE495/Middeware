@@ -225,8 +225,13 @@ public class Database {
 	 * @param ride
 	 */
 	public void updateRide(Rides ride){
-		Query query = new Query(Criteria.where("_id").is(ride.id));
-
+		try {
+		Query query = new Query(Criteria.where("_id").is(ride.getId()));
+		mongoOperation.findAndReplace(query, ride);
+		}
+		catch(Exception e){
+			throw new RuntimeException(e.getLocalizedMessage());
+		}
 	}
 
 	/**
