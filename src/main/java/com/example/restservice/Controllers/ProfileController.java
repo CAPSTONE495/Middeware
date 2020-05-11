@@ -156,6 +156,7 @@ public class ProfileController {
             if(time.isBeforeNow()){
                 //TODO when status var is added, change status
                 iterator.remove();
+                ride.setActive(false);
                 oldRides.add(ride);
                 continue;
             }
